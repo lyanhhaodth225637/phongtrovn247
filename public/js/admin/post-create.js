@@ -1,0 +1,72 @@
+
+document.querySelectorAll('.step').forEach(step => {
+    step.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
+        const offset = 90; // px từ top
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+    });
+});
+
+    // 1. Character counter (giữ nguyên)
+    document.getElementById('title').addEventListener('input', function() {
+        document.getElementById('titleCount').textContent = this.value.length;
+    });
+    document.getElementById('description').addEventListener('input', function() {
+        document.getElementById('descCount').textContent = this.value.length;
+    });
+
+    // 2. Click step → sáng ngay + smooth scroll
+    document.querySelectorAll('.step').forEach(step => {
+        step.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Xóa class active của tất cả step
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+
+            // Thêm class active cho step vừa click
+            this.classList.add('active');
+
+            // Smooth scroll đến section
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offset = 90; // điều chỉnh nếu cần
+                const topPos = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top: topPos, behavior: 'smooth' });
+            }
+        });
+    });
+
+    // 3. Mặc định sáng step 1 khi load trang
+    window.addEventListener('load', () => {
+        const firstStep = document.querySelector('.step[href="#section-1"]');
+        if (firstStep) firstStep.classList.add('active');
+    });
+
+    var map = L.map('map').setView([10.380, 105.435], 15);
+
+// layer OSM
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+var marker;
+
+// click map
+map.on('click', function(e) {
+
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+
+    if(marker){
+        map.removeLayer(marker);
+    }
+
+    marker = L.marker([lat,lng]).addTo(map);
+
+    document.getElementById('latitude').value = lat;
+    document.getElementById('longitude').value = lng;
+
+});
