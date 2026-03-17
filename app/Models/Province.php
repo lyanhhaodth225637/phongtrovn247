@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Province extends Model
 {
-    //table riêng lẽ nên k cần hasmany
+    protected $table = 'provinces';
     protected $fillable = [
         'name',
         'slug',
@@ -16,8 +19,8 @@ class Province extends Model
         'lng',
         'zoom'
     ];
-    public function wards()
+    public function wards() : HasMany
     {
-        return $this->hasMany(Ward::class);
+        return $this->hasMany(Ward::class, 'province_id', 'id');
     }
 }

@@ -81,8 +81,9 @@
         <div id="collapse4" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Components:</h6>
-                <a class="collapse-item" href="{{ route('admin.post') }}">Đăng tin</a>
-                <a class="collapse-item" href="{{ route('admin.amenity') }}">Tiện ích</a>
+                <a class="collapse-item" href="{{ route('admin.post') }}">Quản lý bài viết</a>
+                <a class="collapse-item" href="{{ route('admin.post.create') }}">Đăng tin</a>
+                
             </div>
         </div>
     </li>

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
+    protected $table = 'locations';
     protected $fillable = [
         'category_id',
         'name',
@@ -17,7 +18,7 @@ class Location extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
-        // mỗi location thuộc một category
+        return $this->belongsTo(Category::class,'category_id', 'id');
+        
     }
 }

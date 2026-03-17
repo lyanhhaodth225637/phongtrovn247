@@ -8,14 +8,14 @@ return new class extends Migration {
 
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 150)->unique();
-            $table->string('slug', 160)->unique();
-            $table->string('image')->nullable();
-            $table->enum('status', ['show', 'hidden'])->default('show')->index();
-            $table->timestamps();
-        });
+            Schema::create('categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('name', 150)->unique();
+                $table->string('slug', 160)->unique();
+                $table->string('image')->nullable();
+                $table->enum('status', ['show', 'hidden'])->default('show')->index();
+                $table->timestamps();
+            });
     }
 
     public function down(): void

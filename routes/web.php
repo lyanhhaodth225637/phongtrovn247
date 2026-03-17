@@ -58,17 +58,14 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
     Route::delete('/tien-ich/xoa/{id}-{slug}', [AdminAmenity::class, 'destroy'])->name('amenity.destroy');
 
     //post
-    Route::get('/dang-tin', [AdminPost::class, 'index'])->name('post');
+    Route::get('/bai-viet', [AdminPost::class, 'index'])->name('post');
+    Route::get('/bai-viet/dang-tin', [AdminPost::class, 'create'])->name('post.create');
+    Route::get('provinces', [LocationController::class, 'provinces']);
+    Route::get('wards/{province}', [LocationController::class, 'wards']);
 
 
 });
 
-//nhóm user admin
-Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->group(function () {
-
-    Route::get('/', [AdminHome::class, 'index'])->name('home');
-
-});
 
 //nhóm user landlord 
 Route::prefix('landlord')->middleware(['auth', 'role:lanlord'])->name('landlord.')->group(function () {
