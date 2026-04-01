@@ -22,7 +22,7 @@ class Category extends Model
         //1 category → nhiều location
     }
 
-    public function post() : HasMany{
+    public function posts() : HasMany{
     return $this->hasMany(Post::class,'category_id', 'id');
     }
 }

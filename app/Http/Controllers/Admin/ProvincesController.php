@@ -28,7 +28,7 @@ class ProvincesController extends Controller
     public function store(Request $request)
     {
         //post thêm
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:50|unique:provinces,name',
             'type' => 'required'
         ]);
@@ -36,9 +36,9 @@ class ProvincesController extends Controller
 
 
         Province::create([
-            'name' => Str::ucwords($request->name),
-            'slug' => Str::slug($request->name),
-            'type' => $request->type,
+            'name' => Str::ucwords($data['name']),
+            'slug' => Str::slug($data['name']),
+            'type' => $data['type'],
         ]);
 
         return redirect()->route('admin.province')
@@ -51,9 +51,7 @@ class ProvincesController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(string $id)
     {
         //gọi method get form sửa   
@@ -66,20 +64,21 @@ public function update(Request $request, string $id)
 {
     $province = Province::findOrFail($id);
 
-    $request->validate([
+    $data = $request->validate([
         'name' => [
             'required',
             'string',
             'max:50',
             Rule::unique('provinces')->ignore($id)
         ],
-        'type' => 'required'
+        'type' => 'required', 
+        'code',
     ]);
 
     $province->update([
-        'name' => Str::ucwords($request->name),
-        'slug' => Str::slug($request->name),
-        'type' => $request->type
+        'name' => Str::ucwords($data['name']),
+        'slug' => Str::slug($data['name']),
+        'type' => $data['type'],
     ]);
 
     return redirect()->route('admin.province')

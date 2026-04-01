@@ -21,7 +21,7 @@ class Ward extends Model
     ];
 
     //hasMany
-    public function post(): HasMany
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'ward_id', 'id');
     }

@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             // Giá & diện tích
             $table->decimal('price', 10, 2);
+            $table->enum('price_unit', ['month', 'day'])->default('month');
             $table->integer('area');
             // Địa chỉ
             $table->string('address');
@@ -36,8 +37,14 @@ return new class extends Migration {
             // Ẩn / hiện
             $table->boolean('is_visible_admin')->default(true);
             $table->boolean('is_visible_owner')->default(true);
+            // lý do từ chối
+            $table->text('admin_note')->nullable();
+            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('approved_at')->nullable();
             // Thống kê
             $table->integer('view_count')->default(0);
+            $table->timestamp('pushed_at')->nullable();
+            $table->integer('push_count')->default(0);
             // Hết hạn tin
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();

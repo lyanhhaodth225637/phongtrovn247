@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    
+
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -14,12 +14,15 @@ return new class extends Migration {
             $table->string('slug');
             $table->string('phone')->index()->unique();
             $table->string('avatar')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->enum('status', ['active', 'locked', 'banned'])
                 ->default('active')
                 ->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
+            $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->boolean('has_deposited')->default(false);
+            $table->bigInteger('balance')->default(0);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
@@ -41,7 +44,7 @@ return new class extends Migration {
         });
     }
 
-    
+
     public function down(): void
     {
         Schema::dropIfExists('users');
@@ -49,5 +52,5 @@ return new class extends Migration {
         Schema::dropIfExists('sessions');
     }
 
-    
+
 };

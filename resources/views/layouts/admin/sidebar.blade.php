@@ -30,7 +30,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse1" aria-expanded="true"
             aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-map-marker-alt"></i>
             <span>Địa điểm</span>
         </a>
         <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
@@ -42,10 +42,11 @@
             </div>
         </div>
     </li>
+
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse2" aria-expanded="true"
             aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-users"></i>
             <span>Người dùng</span>
         </a>
         <div id="collapse2" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
@@ -60,7 +61,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse3" aria-expanded="true"
             aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-th-list"></i>
             <span>Danh mục</span>
         </a>
         <div id="collapse3" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
@@ -75,7 +76,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse4" aria-expanded="true"
             aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-newspaper"></i>
             <span>Đăng tin</span>
         </a>
         <div id="collapse4" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
@@ -83,7 +84,40 @@
                 <h6 class="collapse-header">Custom Components:</h6>
                 <a class="collapse-item" href="{{ route('admin.post') }}">Quản lý bài viết</a>
                 <a class="collapse-item" href="{{ route('admin.post.create') }}">Đăng tin</a>
-                
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5" aria-expanded="true"
+            aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-box-open"></i>
+            <span>Gói dịch vụ</span>
+        </a>
+        <div id="collapse5" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Custom Components:</h6>
+                <a class="collapse-item" href="{{ route('admin.user_membership') }}">QL gói đăng tin</a>
+                <a class="collapse-item" href="{{ route('admin.membership') }}">Dịch vụ</a>
+                <a class="collapse-item" href="{{ route('admin.membership_package.create') }}">Gói dịch vụ</a>
+                <a class="collapse-item" href="{{ route('admin.membership.demo') }}">Demo</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse6" aria-expanded="true"
+            aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-box-open"></i>
+            <span>Duyệt nạp</span>
+        </a>
+        <div id="collapse6" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Custom Components:</h6>
+                <a class="collapse-item" href="{{ route('admin.wallet_notifications.index') }}">Danh sách</a>
+                <a class="collapse-item" href="{{ route('admin.membership') }}">Dịch vụ</a>
+                <a class="collapse-item" href="{{ route('admin.membership_package.create') }}">Gói dịch vụ</a>
+                <a class="collapse-item" href="{{ route('admin.membership.demo') }}">Demo</a>
             </div>
         </div>
     </li>

@@ -72,7 +72,10 @@ function loadWards(provinceId, provinceName) {
             wardInput._wardMap = {};
             wardList.innerHTML = '';
             data.forEach(w => {
-                wardInput._wardMap[w.name.trim().toLowerCase()] = { code: w.code, name: w.name };
+            wardInput._wardMap[w.name.trim().toLowerCase()] = { 
+                id: w.id,   // 🔥 đổi từ code → id
+                name: w.name 
+            };
                 const opt = document.createElement('option');
                 opt.value = w.name;
                 wardList.appendChild(opt);
@@ -93,7 +96,7 @@ function resetWard() {
 
 wardInput.addEventListener('input', function () {
     const ward = (this._wardMap || {})[this.value.trim().toLowerCase()];
-    wardCodeInput.value = ward?.code || '';
+    wardCodeInput.value = ward?.id || '';
     if (ward) {
         updateAddress(ward.name, this._provinceName || '');
         highlightWardOnMap(ward.name);

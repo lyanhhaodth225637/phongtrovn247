@@ -9,8 +9,6 @@ use App\Models\Province;
 
 class WardController extends Controller
 {
-
-
     public function index()
     {
         $province = Province::where('code', 91)->firstOrFail();

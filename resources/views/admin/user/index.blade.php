@@ -59,7 +59,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <a href="" title="Xem chi tiết {{ $user->name }} ">{{ $user->name }}</a>
+                                        <a href="{{ route('admin.user.show', ['id' => $user->id, 'slug' => $user->slug]) }}"
+                                            title="Xem chi tiết {{ $user->name }} ">{{ $user->name }}</a>
                                     </td>
                                     <td>{{ $user->phone }}</td>
                                     <td>{{ $user->email }}</td>

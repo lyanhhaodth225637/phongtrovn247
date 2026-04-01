@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
+    protected $table = 'posts';
     protected $fillable = [
         'user_id',
         'category_id',
@@ -27,39 +28,45 @@ class Post extends Model
         'expires_at'
     ];
 
-    // 1 post - nhiều ảnh
+    // HasMany
     public function images(): HasMany
     {
         return $this->hasMany(PostImage::class);
     }
+    public function postModerations(): HasMany
+    {
+        return $this->hasMany(PostModeration::class, 'post_id', 'id');
+    }
+    
+    // Post.php
 
-    // thuộc category
+
+    // BeLongTo
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    // thuộc user
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // thuộc ward
     public function ward(): BelongsTo
     {
         return $this->belongsTo(Ward::class);
     }
 
-    // thuộc membership
     public function membership(): BelongsTo
     {
         return $this->belongsTo(Membership::class);
     }
 
+
     // many-to-many
     public function amenities(): BelongsToMany
     {
-        return $this->belongsToMany(Amenity::class,'post_amenities');
+        return $this->belongsToMany(Amenity::class, 'post_amenities');
     }
+
 }

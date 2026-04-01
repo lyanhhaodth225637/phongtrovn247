@@ -29,7 +29,7 @@
                             <span class="icon text-white-50">
                                 <i class="fas fa-plus"></i>
                             </span>
-                            <span class="text">Đăng ký tài khoản</span>
+                            <span class="text">Đăng tin</span>
                         </a>
                     </div>
                 </div>
@@ -40,12 +40,12 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th style="width:5%">STT</th>
-                                <!-- <th style="width:10%">Hình</th> -->
                                 <th>Tiêu đề</th>
+                                <th>Người đăng</th>
                                 <th>Danh mục</th>
                                 <th>Trạng thái</th>
-                                
-                                <th>Thao tác</th>
+                                <th>Hiển thị</th>
+                                <th>Duyệt</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,30 +57,47 @@
                             @foreach ($posts as $post)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>
-                                        <a href="" title="Xem chi tiết {{ $post->title }} ">{{ $post->title }}</a>
+                                    <td style="max-width: 250px;">
+                                        <a href="{{ route('admin.post.show', ['id' => $post->id]) }}" title="{{ $post->title }}"
+                                            class="d-inline-block text-truncate" style="max-width: 100%;">
+                                            {{ $post->title }}
+                                        </a>
                                     </td>
+                                    <td>{{ $post->user->name }}</td>
                                     <td>{{ $post->category->name }}</td>
                                     <td>
-                                        @if( $post->is_visible_admin == true)
-                                        <span>Hiện</span>
+                                        @if($post->status == 'approved')
+                                            <span
+                                                style="color: #16a34a; background: #dcfce7; padding: 2px 10px; border-radius: 99px; font-size: 13px; font-weight: 500;">Đã
+                                                duyệt</span>
+                                        @elseif($post->status == 'pending')
+                                            <span
+                                                style="color: #d97706; background: #fef3c7; padding: 2px 10px; border-radius: 99px; font-size: 13px; font-weight: 500;">Đang
+                                                chờ duyệt</span>
                                         @else
-                                        <span>Ẩn</span>
+                                            <span
+                                                style="color: #dc2626; background: #fee2e2; padding: 2px 10px; border-radius: 99px; font-size: 13px; font-weight: 500;">Từ
+                                                chối</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href=""
-                                            class="btn btn-sm btn-outline-warning fw-bold" title="Sửa">
-                                            <i class="fa fa-edit"></i> Sửa
+                                        @if($post->is_visible_admin == 1)
+                                            <a href="{{ route('admin.post.show', ['id' => $post->id]) }}"
+                                                class="btn btn-sm btn-outline-success fw-bold" title="Đang hiện">
+                                                <i class="fa fa-eye"></i> Đã hiện
+                                            </a>
+                                        @else
+                                            <a href="{{ route('admin.post.show', ['id' => $post->id]) }}"
+                                                class="btn btn-sm btn-outline-secondary fw-bold" title="Đang ẩn">
+                                                <i class="fa fa-eye-slash"></i> Đã ẩn
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.post.show', ['id' => $post->id]) }}"
+                                            class="btn btn-sm btn-outline-success fw-bold" title="Duyệt bài">
+                                            <i class="fa fa-check-circle"></i> Duyệt bài
                                         </a>
-                                        <form action="" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger fw-bold"
-                                                onclick="return confirm('Bạn có muốn xóa  ?')">
-                                                Xóa
-                                            </button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -92,11 +109,8 @@
     </div>
 @endsection
 @push('scripts')
-
     <script>
-
         $(document).ready(function () {
-
             $('#dataTable').DataTable({
                 pageLength: 10,
                 language: {
@@ -109,9 +123,6 @@
                     }
                 }
             });
-
         });
-
     </script>
-
 @endpush

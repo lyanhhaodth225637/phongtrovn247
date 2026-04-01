@@ -87,4 +87,16 @@ class UserController extends Controller
             return back()->with('error', 'Có lỗi xảy ra, cập nhật thất bại!');
         }
     }
+
+    public function show($id)
+    {
+        $user = User::with([
+            'posts.category',
+            'posts.ward',
+            'posts.membership',
+            'userMemberships.membershipPackage.membership'
+        ])->findOrFail($id);
+
+        return view('admin.user.show',compact('user'));
+    }
 }

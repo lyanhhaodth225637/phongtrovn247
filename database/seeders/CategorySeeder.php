@@ -12,25 +12,23 @@ class CategorySeeder extends Seeder
 
     public function run(): void
     {
-        Category::insert([
-            [
-                'name' => 'Phòng trọ',
-                'slug' => Str::slug('Phòng trọ'),
-                'image' => 'tro.png',
-                'status' => 'show'
-            ],
-            [
-                'name' => 'Khách sạn',
-                'slug' => Str::slug('Khách sạn'),
-                'image' => 'khachsan.png',
-                'status' => 'show'
-            ],
-            [
-                'name' => 'Nhà nghỉ',
-                'slug' => Str::slug('Nhà nghỉ'),
-                'image' => 'nhanghi.png',
-                'status' => 'show'
-            ]
-        ]);
+        $categories = [
+            ['name' => 'Phòng trọ', 'image' => 'tro.png'],
+            ['name' => 'Khách sạn', 'image' => 'khachsan.png'],
+            ['name' => 'Nhà nghỉ', 'image' => 'nhanghi.png'],
+            ['name' => 'Nhà nguyên căn', 'image' => 'nhanguyencan.png'],
+            ['name' => 'Chung cư', 'image' => 'chungcu.png'],
+        ];
+
+        foreach ($categories as $item) {
+            Category::updateOrCreate(
+                ['slug' => Str::slug($item['name'])],
+                [
+                    'name' => $item['name'],
+                    'image' => $item['image'],
+                    'status' => 'show',
+                ]
+            );
+        }
     }
 }

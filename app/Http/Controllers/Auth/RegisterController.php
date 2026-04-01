@@ -26,21 +26,33 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:10', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'referred_by' => ['nullable', 'string', 'max:10', 'exists:users,phone'],
+        ], [
+            'referred_by.exists' => 'SĐT giới thiệu không tồn tại'
         ]);
     }
 
     protected function create(array $data)
     {
+        $referrer = null;
+
+        if (!empty($data['referred_by'])) {
+            $referrer = User::where('phone', $data['referred_by'])->first();
+        }
+
         $user = User::create([
             'name' => $data['name'],
             'slug' => Str::slug($data['name']),
             'phone' => $data['phone'],
-            'email' => $data['email'],
+            'email' => $data['email'] ?? null,
             'password' => Hash::make($data['password']),
+            'referred_by' => $referrer?->id // chuẩn
         ]);
-        $user->assignRole('user'); //rán role user là mặt định khi đăng ký
+
+        $user->assignRole('user');
+
         return $user;
     }
 }

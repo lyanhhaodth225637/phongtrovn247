@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+
+            // ✅ thêm dòng này
+            'check.user' => \App\Http\Middleware\CheckLandlordOrAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

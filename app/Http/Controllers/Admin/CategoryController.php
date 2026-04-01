@@ -22,24 +22,24 @@ class CategoryController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:50|unique:categories,name',
         ]);
 
-        $slug = Str::slug($request->name);
+        
         $path = null;
 
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
             $ext = $file->getClientOriginalExtension();
-            $filename = $slug . '.' . $ext;
+            $filename = Str::slug($data['name']) . '.' . $ext;
             Storage::disk('public')->putFileAs('avatars', $file, $filename);
             $path = 'avatars/' . $filename;
         }
 
         Category::create([
-            'name' => Str::ucfirst($request->name),
-            'slug' => $slug,
+            'name' => Str::ucfirst($data['name']),
+            'slug' => Str::slug($data['name']),
             'avatar' => $path
         ]);
         return redirect()->route('admin.category')->with('success', 'Thêm danh mục thành công');
@@ -54,7 +54,7 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $category = Category::findOrFail($id);
-        $request->validate([
+        $data = $request->validate([
             'name' => [
                 'required',
                 'string',
@@ -65,8 +65,8 @@ class CategoryController extends Controller
 
 
         $category->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
+            'name' => $data['name'],
+            'slug' => Str::slug($data['name']),
         ]);
 
         return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công');

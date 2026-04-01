@@ -12,26 +12,14 @@ return new class extends Migration {
     {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // tên gói (Free, VIP, Pro)
+            $table->string('name');
             $table->string('slug')->unique();
-            $table->decimal('price', 10, 2)->default(0); // giá
-            $table->integer('duration'); // số ngày (30, 60...)
             $table->integer('priority')->default(0);
-            // độ ưu tiên (hiển thị cao hơn)
-            $table->integer('max_posts')->default(1);
-            // số bài được đăng
-            $table->boolean('is_featured')->default(false);
-            // có nổi bật không
-            $table->enum('status', ['active', 'inactive'])
-                ->default('active');
-
+            $table->string('color')->nullable();// mã màu
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('memberships');

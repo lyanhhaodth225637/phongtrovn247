@@ -1,173 +1,379 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.frontend.app')
+@section('content')
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-badge">
+          <i class="bi bi-geo-alt-fill"></i> Nền tảng tìm thuê nhà hàng đầu Việt Nam
+        </div>
+        <h1 class="hero-title">
+          Tìm phòng trọ, căn hộ,<br>
+          nhà thuê <span class="highlight">ưng ý nhất</span>
+        </h1>
+        <p class="hero-sub">Hàng trăm nghìn tin đăng mỗi ngày – tìm nhanh, thuê dễ</p>
 
-<head>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        {{-- Search bar --}}
+        <div class="search-bar">
+          <select>
+            <option>Danh mục</option>
+           
+              <option value=""></option>
+           
+          </select>
+          <div class="search-divider d-none d-sm-block"></div>
+          <select>
+            <option value="">Tỉnh/Thành phố</option>
+            <option>An Giang</option>
+            <option>TP. Hồ Chí Minh</option>
+            <option>Hà Nội</option>
+            <option>Đà Nẵng</option>
+            <option>Cần Thơ</option>
+            <option>Bình Dương</option>
+            <option>Long An</option>
+          </select>
+          <div class="search-divider d-none d-md-block"></div>
+          <select>
+            <option value="">Quận/Huyện</option>
+            <option>TP. Long Xuyên</option>
+            <option>H. Châu Thành</option>
+            <option>H. Thoại Sơn</option>
+          </select>
+          <div class="search-divider d-none d-lg-block"></div>
+          <select class="d-none d-lg-block">
+            <option value="">Giá thuê</option>
+            <option>Dưới 1 triệu</option>
+            <option>1 – 2 triệu</option>
+            <option>2 – 3 triệu</option>
+            <option>3 – 5 triệu</option>
+            <option>5 – 7 triệu</option>
+            <option>Trên 7 triệu</option>
+          </select>
+          <button class="btn-search">
+            <i class="bi bi-search"></i> Tìm kiếm
+          </button>
+        </div>
 
-    <!-- Tom Select -->
-    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+        {{-- Quick tags --}}
+        <div class="quick-tags">
+          <span class="quick-tag">Dưới 2 triệu</span>
+          <span class="quick-tag">2–4 triệu</span>
+          <span class="quick-tag">Gần trường ĐH</span>
+          <span class="quick-tag">Có nội thất</span>
+          <span class="quick-tag">Cho phép nuôi thú</span>
+          <span class="quick-tag">Tự do giờ giấc</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <style>
-        .ts-control {
-            border-radius: 6px;
-        }
+  <!-- ═══ STATS BAR ═══ -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="row text-center g-0">
+        <div class="col stat-item py-1"><strong>128.450</strong> tin đang đăng</div>
+        <div class="col stat-item py-1 d-none d-sm-block"><strong>63</strong> tỉnh thành</div>
+        <div class="col stat-item py-1"><strong>4.200</strong> tin mới hôm nay</div>
+        <div class="col stat-item py-1 d-none d-sm-block"><strong>1.2M+</strong> lượt xem/ngày</div>
+      </div>
+    </div>
+  </div>
 
-        .ts-dropdown {
-            z-index: 1000;
-        }
-    </style>
-</head>
+  <!-- ═══ CATEGORY CHIPS ═══ -->
+  <div class="cat-chips-wrap">
+    <div class="container">
+      <div class="cat-chips-scroll">
+        <a href="{{ route('frontend.home') }}" class="cat-chip {{ request()->routeIs('frontend.home') ? 'active' : '' }}">
+          <i class="bi bi-grid-fill"></i> Tất cả
+        </a>
+       
+          <a href=""
+            class="cat-chip ">
+           
+          </a>
+        
+      </div>
+    </div>
+  </div>
+   {{-- Listing tabs --}}
+    <div class="listing-tabs">
+      <a class="listing-tab {{ request('sort') != 'new' ? 'active' : '' }}" data-tab="deXuat"
+        href="{{ url()->current() }}">
+        <i class="bi bi-stars"></i> Đề xuất
+      </a>
+      <a class="listing-tab {{ request('sort') == 'new' ? 'active' : '' }}" data-tab="moiNhat"
+        href="{{ url()->current() }}?sort=new">
+        <i class="bi bi-clock-history"></i> Mới nhất
+      </a>
+    </div>
+  {{-- ══ TAB: ĐỀ XUẤT ══ --}}
+  <div class="tab-pane-custom active" id="tab-deXuat">
+    {{-- ── VIP 5 ── --}}
+    <div class="mb-4">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <span class="accent-line" style="background:linear-gradient(180deg,#dc2626,#ef4444)"></span>
+          <span class="vip-badge vip-5 me-1"><i class="bi bi-star-fill"></i> VIP 5</span>
+          Tin nổi bật cao cấp
+        </h2>
+        <a href="#" class="sec-more">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+      </div>
 
-<body>
+      <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-4">
 
-    <div>
-        @auth
-            <h1>{{ auth()->user()->name }}</h1>
-            <img id="avatarPreview" width="200px" src="{{ asset('storage/' . (auth()->user()->avatar ?? 'default/avt_default.png')) }}" alt="Avatar">
-        @endauth
+        @forelse($postVip5 as $post)
+          <div class="col">
+            <div class="card-vip5 h-100">
+              <div class="img-wrap">
+                <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
+                  alt="{{ $post->title }}" loading="lazy">
+                @if($post->images->count() > 0)
+                  <span class="hot-tag"><i class="bi bi-fire"></i> Hot</span>
+                  <span class="img-count"><i class="bi bi-images"></i> {{ $post->images->count() }}</span>
+                @endif
+              </div>
+              <div class="body">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="vip-badge vip-5"><i class="bi bi-star-fill"></i> VIP 5</span>
+                  <span class="time-ago"><i class="bi bi-clock"></i> {{ $post->created_at->diffForHumans() }}</span>
+                </div>
+                <div class="price">{{ number_format($post->price) }}đ/tháng</div>
+                <a href="{{ route('frontend.post.show', ['id' => $post->id, 'slug' => $post->slug]) }}"
+                  class="title-link mt-1">{{ $post->title }}</a>
+                <div class="meta-row">
+                  <span class="meta-chip"><i class="bi bi-rulers"></i> {{ $post->area }}m²</span>
+                  <span class="meta-chip"><i class="bi bi-geo-alt"></i> {{ $post->ward->name ?? '' }}</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-auto pt-2">
+                  <span class="poster-name">
+                    <i class="bi bi-person-fill"></i> {{ $post->user->name ?? 'Ẩn danh' }}
+                  </span>
+                  <div class="d-flex gap-2">
+                    <button class="save-btn" aria-label="Lưu tin"><i class="bi bi-bookmark"></i></button>
+                    <button class="phone-btn">
+                      <i class="bi bi-telephone-fill"></i>
+                      {{ substr($post->user->phone ?? '0000000000', 0, 3) }}*****{{ substr($post->user->phone ?? '0000000000', -2) }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-muted text-center py-3">Chưa có tin VIP 5 nào.</p>
+          </div>
+        @endforelse
+      </div>
     </div>
 
-    <h3>Chọn khu vực</h3>
+    {{-- ── VIP 4 ── --}}
+    <div class="mb-4">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <span class="accent-line" style="background:linear-gradient(180deg,#ea580c,#f97316)"></span>
+          <span class="vip-badge vip-4 me-1"><i class="bi bi-star-half"></i> VIP 4</span>
+          Tin đăng ưu tiên
+        </h2>
+        <a href="#" class="sec-more">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+      </div>
 
-    <select id="province">
-        <option value="">-- Chọn tỉnh --</option>
-        @foreach($provinces as $province)
-            <option value="{{ $province->id }}">{{ $province->name }}</option>
-        @endforeach
-    </select>
+      <div class="row g-2">
+        @forelse($postVip4 as $post)
+          <div class="col-12 col-md-6">
+            <div class="card-vip4">
+              <div class="img-wrap" style="position:relative">
+                <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
+                  alt="{{ $post->title }}" loading="lazy">
+                <span class="vip-badge vip-4" style="position:absolute;top:6px;left:6px">
+                  <i class="bi bi-star-half"></i> VIP 4
+                </span>
+              </div>
+              <div class="body">
+                <span class="time-ago"><i class="bi bi-clock"></i> {{ $post->created_at->diffForHumans() }}</span>
+                <a href="" class="title-link mt-1">{{ $post->title }}</a>
+                <div class="price mt-1">{{ number_format($post->price) }}đ/tháng</div>
+                <div class="d-flex align-items-center justify-content-between mt-1">
+                  <div class="meta-row">
+                    <span class="meta-chip"><i class="bi bi-rulers"></i> {{ $post->area }}m²</span>
+                    <span class="meta-chip"><i class="bi bi-geo-alt"></i> {{ $post->ward->name ?? '' }}</span>
+                  </div>
+                  <button class="phone-btn" style="font-size:0.7rem;padding:5px 10px">
+                    <i class="bi bi-telephone-fill"></i>
+                    {{ substr($post->user->phone ?? '0000000000', 0, 3) }}*****{{ substr($post->user->phone ?? '0000000000', -2) }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-muted text-center py-3">Chưa có tin VIP 4 nào.</p>
+          </div>
+        @endforelse
+      </div>
+    </div>
 
-    <select id="ward">
-        <option value="">-- Chọn phường/xã --</option>
-    </select>
+    {{-- ── VIP 3 ── --}}
+    <div class="mb-4">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <span class="accent-line" style="background:linear-gradient(180deg,#7c3aed,#a855f7)"></span>
+          <span class="vip-badge vip-3 me-1">VIP 3</span> Tin ưu tiên thường
+        </h2>
+        <a href="#" class="sec-more">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+      </div>
 
-    <br><br>
+      <div class="row g-2">
+        @forelse($postVip3 as $post)
+          <div class="col-12 col-md-6">
+            <div class="card-small">
+              <div class="img-wrap">
+                <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
+                  alt="{{ $post->title }}" loading="lazy">
+              </div>
+              <div class="body">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="vip-badge vip-3">VIP 3</span>
+                  <span class="time-ago"><i class="bi bi-clock"></i> {{ $post->created_at->diffForHumans() }}</span>
+                </div>
+                <a href="" class="title-link">{{ $post->title }}</a>
+                <div class="price mt-1">{{ number_format($post->price) }}đ/tháng</div>
+                <div class="meta-row">
+                  <span class="meta-chip"><i class="bi bi-rulers"></i> {{ $post->area }}m²</span>
+                  <span class="meta-chip"><i class="bi bi-geo-alt"></i> {{ $post->ward->name ?? '' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-muted text-center py-3">Chưa có tin VIP 3 nào.</p>
+          </div>
+        @endforelse
+      </div>
+    </div>
 
-    <div id="map" style="height:600px"></div>
+    {{-- ── VIP 2 ── --}}
+    <div class="mb-4">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <span class="accent-line" style="background:linear-gradient(180deg,#0b5ed7,#3b82f6)"></span>
+          <span class="vip-badge vip-2 me-1">VIP 2</span> Tin mới đăng
+        </h2>
+        <a href="#" class="sec-more">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+      </div>
 
-    <script>
+      <div class="row g-2">
+        @forelse($postVip2 as $post)
+          <div class="col-12 col-md-6">
+            <div class="card-small">
+              <div class="img-wrap">
+                <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
+                  alt="{{ $post->title }}" loading="lazy">
+              </div>
+              <div class="body">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="vip-badge vip-2">VIP 2</span>
+                  <span class="time-ago"><i class="bi bi-clock"></i> {{ $post->created_at->diffForHumans() }}</span>
+                </div>
+                <a href="" class="title-link">{{ $post->title }}</a>
+                <div class="price mt-1">{{ number_format($post->price) }}đ/tháng</div>
+                <div class="meta-row">
+                  <span class="meta-chip"><i class="bi bi-rulers"></i> {{ $post->area }}m²</span>
+                  <span class="meta-chip"><i class="bi bi-geo-alt"></i> {{ $post->ward->name ?? '' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-muted text-center py-3">Chưa có tin VIP 2 nào.</p>
+          </div>
+        @endforelse
+      </div>
+    </div>
 
-        /* ── Tom Select khởi tạo ── */
+    {{-- ── VIP 1 ── --}}
+    <div class="mb-4">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <span class="accent-line" style="background:linear-gradient(180deg,#059669,#10b981)"></span>
+          <span class="vip-badge vip-1 me-1">VIP 1</span> Tin thường
+        </h2>
+        <a href="#" class="sec-more">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+      </div>
 
-        const tsProvince = new TomSelect('#province', {
-            placeholder: '-- Tìm hoặc chọn tỉnh --',
-            allowEmptyOption: true
-        });
+      <div class="row g-2">
+        @forelse($postVip1 as $post)
+          <div class="col-12 col-md-4">
+            <div class="card-small">
+              <div class="img-wrap">
+                <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
+                  alt="{{ $post->title }}" loading="lazy">
+              </div>
+              <div class="body">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="vip-badge vip-1">VIP 1</span>
+                  <span class="time-ago"><i class="bi bi-clock"></i> {{ $post->created_at->diffForHumans() }}</span>
+                </div>
+                <a href="" class="title-link">{{ $post->title }}</a>
+                <div class="price mt-1">{{ number_format($post->price) }}đ/tháng</div>
+                <div class="meta-row">
+                  <span class="meta-chip"><i class="bi bi-rulers"></i> {{ $post->area }}m²</span>
+                  <span class="meta-chip"><i class="bi bi-geo-alt"></i> {{ $post->ward->name ?? '' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-muted text-center py-3">Chưa có tin VIP 1 nào.</p>
+          </div>
+        @endforelse
+      </div>
+    </div>
 
-        let tsWard = new TomSelect('#ward', {
-            placeholder: '-- Tìm hoặc chọn phường/xã --',
-            allowEmptyOption: true
-        });
+    {{-- ── FREE ── --}}
+    <div class="mb-3">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <span class="accent-line" style="background:linear-gradient(180deg,#475569,#94a3b8)"></span>
+          <span class="vip-badge vip-free me-1">Miễn phí</span> Tin đăng miễn phí
+        </h2>
+        <a href="#" class="sec-more">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+      </div>
 
+      <div class="row g-2">
+        @forelse($postFree as $post)
+          <div class="col-12 col-md-4">
+            <div class="card-small">
+              <div class="img-wrap">
+                <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
+                  alt="{{ $post->title }}" loading="lazy">
+              </div>
+              <div class="body">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="vip-badge vip-free">Miễn phí</span>
+                  <span class="time-ago"><i class="bi bi-clock"></i> {{ $post->created_at->diffForHumans() }}</span>
+                </div>
+                <a href="" class="title-link">{{ $post->title }}</a>
+                <div class="price mt-1">{{ number_format($post->price) }}đ/tháng</div>
+                <div class="meta-row">
+                  <span class="meta-chip"><i class="bi bi-rulers"></i> {{ $post->area }}m²</span>
+                  <span class="meta-chip"><i class="bi bi-geo-alt"></i> {{ $post->ward->name ?? '' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-muted text-center py-3">Chưa có tin miễn phí nào.</p>
+          </div>
+        @endforelse
+      </div>
+    </div>
 
-        /* ── Leaflet map ── */
+  </div>
 
-        var map = L.map('map').setView([10.52, 105.12], 10);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        let geoLayer = null;
-
-
-        /* load geojson */
-        fetch('/geojson/angiang_wards.geojson')
-            .then(res => res.json())
-            .then(data => {
-
-                geoLayer = L.geoJSON(data, {
-                    style: { color: "#ff0000", weight: 1, fillOpacity: 0.1 },
-                    onEachFeature: function (feature, layer) {
-                        layer.bindPopup(feature.properties.ten_xa || '');
-                    }
-                }).addTo(map);
-
-            });
-
-
-        /* load ward theo province */
-
-        tsProvince.on('change', function (provinceId) {
-
-            if (!provinceId) return;
-
-            fetch('/wards/' + provinceId)
-                .then(res => res.json())
-                .then(data => {
-
-                    // Xóa options cũ và destroy để tạo lại
-                    tsWard.destroy();
-
-                    const wardSelect = document.getElementById('ward');
-                    wardSelect.innerHTML = "<option value=''>-- Chọn phường/xã --</option>";
-
-                    data.forEach(ward => {
-                        wardSelect.innerHTML +=
-                            `<option value="${ward.code}" data-name="${ward.name}">${ward.name}</option>`;
-                    });
-
-                    // Khởi tạo lại Tom Select
-                    tsWard = new TomSelect('#ward', {
-                        placeholder: '-- Tìm hoặc chọn phường/xã --',
-                        allowEmptyOption: true
-                    });
-
-                    tsWard.on('change', handleWardChange);
-
-                });
-
-        });
-
-
-        /* highlight ward trên map */
-
-        function handleWardChange(wardCode) {
-
-            if (!wardCode || !geoLayer) return;
-
-            const selectedOption = document.querySelector(`#ward option[value="${wardCode}"]`);
-            if (!selectedOption) return;
-
-            const wardName = selectedOption.getAttribute('data-name');
-            const wardNameNorm = normalizeName(wardName);
-
-            geoLayer.eachLayer(function (layer) {
-
-                const geoName = normalizeName(layer.feature.properties.ten_xa || '');
-
-                if (geoName === wardNameNorm) {
-                    layer.setStyle({ color: "blue", weight: 3, fillOpacity: 0.3 });
-                    map.fitBounds(layer.getBounds());
-                    layer.openPopup();
-                } else {
-                    layer.setStyle({ color: "#ff0000", weight: 1, fillOpacity: 0.1 });
-                }
-
-            });
-
-        }
-
-        tsWard.on('change', handleWardChange);
-
-
-        /* normalize name */
-
-        function normalizeName(str) {
-            if (!str) return '';
-            return str
-                .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/^(xa|phuong|thi ?tran|thi ?xa|quan)\s*/i, '')
-                .replace(/\s+/g, '')
-                .trim();
-        }
-
-    </script>
-
-</body>
-
-</html>
+@endsection

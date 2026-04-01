@@ -24,15 +24,17 @@ class AmenityController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:50|unique:amenities,name',
         ]);
 
         Amenity::create([
-            'name' => Str::ucfirst($request->name),
-            'slug' => Str::slug($request->name),
+            'name' => Str::ucfirst($data['name']),
+            'slug' => Str::slug($data['name']),
         ]);
-        return redirect()->route('admin.amenity')->with('success', 'Thêm tiện ích thành công');
+
+        return redirect()->route('admin.amenity')
+            ->with('success', 'Thêm tiện ích thành công');
     }
 
     public function edit(string $id)
@@ -44,7 +46,7 @@ class AmenityController extends Controller
     public function update(Request $request, string $id)
     {
         $category = Amenity::findOrFail($id);
-        $request->validate([
+        $data=$request->validate([
             'name' => [
                 'required',
                 'string',
@@ -54,8 +56,8 @@ class AmenityController extends Controller
         ]);
 
         $category->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
+            'name' => $data['name'],
+            'slug' => Str::slug($data['name']),
         ]);
 
         return redirect()->route('admin.amenity')->with('success', 'Cập nhật danh mục thành công');

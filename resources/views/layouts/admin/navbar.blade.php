@@ -45,53 +45,65 @@
         </li>
 
         <!-- Nav Item - Alerts -->
+        @auth
+            @php
+                $unreadNotifications = auth()->user()->unreadNotifications()->latest()->take(5)->get();
+                $unreadCount = auth()->user()->unreadNotifications()->count();
+            @endphp
+        @endauth
+
+
+        <!-- Nav Item - Alerts -->
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+
+                @if($unreadCount > 0)
+                    <span class="badge badge-danger badge-counter">
+                        {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                    </span>
+                @endif
             </a>
+
             <!-- Dropdown - Alerts -->
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
+
                 <h6 class="dropdown-header">
-                    Alerts Center
+                    Thông báo mới
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-primary">
-                            <i class="fas fa-file-alt text-white"></i>
+
+                @forelse($unreadNotifications as $notification)
+                    <a class="dropdown-item d-flex align-items-center"
+                        href="{{ route('admin.notifications.read', $notification->id) }}">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-{{ $notification->data['color'] ?? 'primary' }}">
+                                <i class="{{ $notification->data['icon'] ?? 'fas fa-bell' }} text-white"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div class="small text-gray-500">December 12, 2019</div>
-                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-success">
-                            <i class="fas fa-donate text-white"></i>
+                        <div>
+                            <div class="small text-gray-500">
+                                {{ $notification->created_at->format('d/m/Y H:i') }}
+                            </div>
+                            <span class="font-weight-bold">
+                                {{ $notification->data['title'] ?? 'Thông báo mới' }}
+                            </span>
+                            <div class="small text-muted">
+                                {{ $notification->data['message'] ?? '' }}
+                            </div>
                         </div>
+                    </a>
+                @empty
+                    <div class="dropdown-item text-center small text-gray-500">
+                        Không có thông báo mới
                     </div>
-                    <div>
-                        <div class="small text-gray-500">December 7, 2019</div>
-                        $290.29 has been deposited into your account!
-                    </div>
+                @endforelse
+
+                <a class="dropdown-item text-center small text-gray-500"
+                    href="{{ route('admin.notifications.index') }}">
+                    Xem tất cả thông báo
                 </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-warning">
-                            <i class="fas fa-exclamation-triangle text-white"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="small text-gray-500">December 2, 2019</div>
-                        Spending Alert: We've noticed unusually high spending for your account.
-                    </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
             </div>
         </li>
 

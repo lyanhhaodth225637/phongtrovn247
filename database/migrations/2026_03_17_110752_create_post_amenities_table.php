@@ -12,17 +12,9 @@ return new class extends Migration {
     {
         Schema::create('post_amenities', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('post_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->foreignId('amenity_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('amenity_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
             $table->unique(['post_id', 'amenity_id']); // tránh trùng
         });
     }

@@ -17,39 +17,38 @@
     <div id="stepsSentinel" style="height:1px;margin-top:-1px;pointer-events:none"></div>
 
     {{-- ── Steps Bar — STICKY ────────────────────────────────── --}}
-   <div class="steps-container" id="stepsContainer">
-    <div class="steps">
-        <a href="#section-1" class="step">
-            <div class="step-circle">1</div>
-            <div class="step-label">Danh mục</div>
-        </a>
-        <a href="#section-2" class="step">
-            <div class="step-circle">2</div>
-            <div class="step-label">Khu vực</div>
-        </a>
-        <a href="#section-3" class="step">
-            <div class="step-circle">3</div>
-            <div class="step-label">Mô tả</div>
-        </a>
-        <a href="#section-4" class="step">
-            <div class="step-circle">4</div>
-            <div class="step-label">Tiện ích</div>
-        </a>
-        <a href="#section-5" class="step">
-            <div class="step-circle">5</div>
-            <div class="step-label">Hình ảnh</div>
-        </a>
-        <a href="#section-6" class="step">
-            <div class="step-circle">6</div>
-            <div class="step-label">Liên hệ</div>
-        </a>
+    <div class="steps-container" id="stepsContainer">
+        <div class="steps">
+            <a href="#section-1" class="step">
+                <div class="step-circle">1</div>
+                <div class="step-label">Danh mục</div>
+            </a>
+            <a href="#section-2" class="step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Khu vực</div>
+            </a>
+            <a href="#section-3" class="step">
+                <div class="step-circle">3</div>
+                <div class="step-label">Mô tả</div>
+            </a>
+            <a href="#section-4" class="step">
+                <div class="step-circle">4</div>
+                <div class="step-label">Tiện ích</div>
+            </a>
+            <a href="#section-5" class="step">
+                <div class="step-circle">5</div>
+                <div class="step-label">Hình ảnh</div>
+            </a>
+            <a href="#section-6" class="step">
+                <div class="step-circle">6</div>
+                <div class="step-label">Liên hệ</div>
+            </a>
+        </div>
+        
     </div>
-    
-</div>
 
-    <form action="" method="POST" enctype="multipart/form-data" novalidate>
+    <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
-
         {{-- ── Card 1: Loại chuyên mục ─────────────────────── --}}
         <div class="card" id="section-1">
             <div class="card-header">
@@ -74,7 +73,7 @@
                         @foreach ($categories as $category)
                             <option 
                                 value="{{ $category->id }}"
-                                {{ old('category') == $category->id ? 'selected' : '' }}>
+                                {{ old('category') == $category->id ? 'selected' : '' }}>   
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -139,14 +138,13 @@
                             >
                             <datalist id="ward-list"></datalist>
                             {{-- Hidden input lưu code thật --}}
-                            <input type="hidden" name="ward" id="ward_code_input"
-                                value="{{ old('ward') }}">
-                            @error('ward')
+                            <input type="hidden" name="ward_id" id="ward_code_input"
+                                value="{{ old('ward_id') }}">
+                            @error('ward_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @enderror           
                         </div>
                     </div>
-        
                     <div class="col-6">
                         <div class="form-group">
                             <label class="form-label">Số nhà/tên đường</label>
@@ -378,7 +376,7 @@
                             <input
                                 type="text"
                                 id="contact_name"
-                                name="name"
+                                name="contact_name"
                                 class="form-control @error('contact_name') is-invalid @enderror"
                                 value="{{ old('contact_name', auth()->user()->name ?? '') }}"
                                 required
@@ -395,7 +393,7 @@
                             <input
                                 type="tel"
                                 id="contact_phone"
-                                name="phone"
+                                name="contact_phone"
                                 class="form-control @error('contact_phone') is-invalid @enderror"
                                 value="{{ old('contact_phone', auth()->user()->phone ?? '') }}"
                                 required

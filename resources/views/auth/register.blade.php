@@ -48,7 +48,8 @@
 
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                        name="email" value="{{ old('email') }}" required autocomplete="email">
+                                        name="email" value="{{ old('email') }}" autocomplete="email"
+                                        placeholder="nếu có">
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -85,6 +86,23 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="referred_by" class="col-md-4 col-form-label text-md-end">
+                                    SĐT người giới thiệu (nếu có)
+                                </label>
+
+                                <div class="col-md-6">
+                                    <input id="referred_by" type="text"
+                                        class="form-control @error('referred_by') is-invalid @enderror"
+                                        name="referred_by" value="{{ old('referred_by') }}" autocomplete="tel">
+
+                                    @error('referred_by')
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">

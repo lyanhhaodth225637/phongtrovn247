@@ -6,19 +6,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Membership extends Model
 {
+    protected $table = 'memberships';
     protected $fillable = [
         'name',
         'slug',
-        'price',
-        'duration',
         'priority',
-        'max_posts',
-        'is_featured',
-        'status'
+        'color',
+        'description',
     ];
 
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, "membership_id", 'id');
     }
+
+    public function membershipPackages(): HasMany
+    {
+        return $this->hasMany(MembershipPackage::class, 'membership_id');
+    }
+
+
 }
