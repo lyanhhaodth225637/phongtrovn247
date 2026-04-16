@@ -34,11 +34,10 @@ class PostSeeder extends Seeder
         ];
 
         $plan = [
-            1 => 10,   // vip1 - 10 bài
-            2 => 15,   // vip2 - 15 bài
-            3 => 20,   // vip3 - 20 bài
-            4 => 50,   // vip4 - 50 bài
-            5 => 100,  // vip5 - 100 bài
+            1 => 10,  
+            
+            4 => 50,   
+            5 => 100,  
         ];
 
         foreach ($plan as $membershipId => $count) {

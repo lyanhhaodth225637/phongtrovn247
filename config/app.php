@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    'auto_approve_landlord_demo' => env('AUTO_APPROVE_LANDLORD_DEMO', false),
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE','UTC'),
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------

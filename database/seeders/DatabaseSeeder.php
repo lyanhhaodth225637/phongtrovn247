@@ -13,25 +13,26 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
 
-                // 🔹 Danh mục - vị trí - tiện ích
+                //  Danh mục - vị trí - tiện ích
             CategorySeeder::class,
             ProvinceSeeder::class,
             WardSeeder::class,
             LocationSeeder::class,
             AmenitySeeder::class,
 
-                // 🔹 Membership
+                //  Membership
             MembershipSeeder::class,
             MembershipPackageSeeder::class,
 
-                // 🔹 User + Role
+                //  User + Role
             UserSeeder::class,
 
-                // 🔹 Gán VIP cho user
+                //  Gán VIP cho user
             UserMembershipSeeder::class,
+            SystemWalletSeeder::class,
 
-                // 🔹 Bài đăng
-            PostSeeder::class,
+                //  Bài đăng
+            //PostSeeder::class,
             // PostImageSeeder::class,
 
         ]);

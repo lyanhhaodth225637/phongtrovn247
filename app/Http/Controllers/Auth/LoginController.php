@@ -41,7 +41,7 @@ class LoginController extends Controller
 
         if ($user && $user->status == 'locked') {
             throw ValidationException::withMessages([
-                'phone' => ['Tài khoản của bạn đang bị khóa. Vui lòng liên hệ QTV để giải quết'],
+                'phone' => ['Tài khoản của bạn đang bị khóa. Vui lòng liên hệ QTV để giải quyết'],
             ]);
         }
 

@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Notifications\DepositApprovedNotification;
+
+use App\Notifications\ReferralRewardReceivedNotification;
+
 use Throwable;
 
 
@@ -47,6 +51,7 @@ class SystemWalletNotificationController extends Controller
     {
         try {
             DB::transaction(function () use ($notification) {
+
                 $lockedNotification = SystemWalletNotification::whereKey($notification->id)
                     ->lockForUpdate()
                     ->firstOrFail();
@@ -109,7 +114,7 @@ class SystemWalletNotificationController extends Controller
                 // TÍNH THƯỞNG CHO USER NẠP
                 // =========================
                 $firstDepositBonus = 0;       // +10% nạp đầu
-                $referralBonusForUser = 0;    // +5% nếu có người giới thiệu
+                $referralBonusForUser = 0;    // +10% nếu có người giới thiệu
                 $totalUserBonus = 0;
 
                 if ($isFirstDeposit) {
@@ -135,7 +140,7 @@ class SystemWalletNotificationController extends Controller
 
                 if ($isFirstDeposit) {
                     if ($referralBonusForUser > 0) {
-                        $transactionAdminNote = 'Admin đã duyệt giao dịch nạp tiền. User được thưởng nạp đầu 10% và thêm 5% do có người giới thiệu.';
+                        $transactionAdminNote = 'Admin đã duyệt giao dịch nạp tiền. User được thưởng nạp đầu 10% và thêm 10% do có người giới thiệu.';
                     } else {
                         $transactionAdminNote = 'Admin đã duyệt giao dịch nạp tiền. User được thưởng nạp đầu 10%.';
                     }
@@ -192,7 +197,7 @@ class SystemWalletNotificationController extends Controller
                         ->first();
 
                     if ($referrer) {
-                        $referrerReward = (int) floor($amount * 0.1);
+                        $referrerReward = (int) floor($amount * 0.10);
 
                         if ($referrerReward > 0) {
                             $beforeReferrerBalance = (int) $referrer->balance;
@@ -220,20 +225,20 @@ class SystemWalletNotificationController extends Controller
                                 'approved_by' => Auth::id(),
                                 'requested_at' => now(),
                                 'processed_at' => now(),
-                                'admin_note' => 'Người được giới thiệu nạp lần đầu thành công, thưởng 5%.',
+                                'admin_note' => 'Người được giới thiệu nạp lần đầu thành công, thưởng 10%.',
                             ]);
                         }
                     }
                 }
 
-                // 4) Cập nhật notification thành đã duyệt
+                // 4) Cập nhật notification nạp thành đã duyệt
                 $notificationAdminNote = 'Đã duyệt biến động số dư và cộng tiền cho người dùng.';
 
                 if ($isFirstDeposit) {
                     if ($referralBonusForUser > 0 && $referrerReward > 0) {
-                        $notificationAdminNote = 'Đã duyệt biến động số dư, cộng tiền nạp cho user, thưởng user 15% (10% nạp đầu + 5% có người giới thiệu) và thưởng người giới thiệu 5%.';
+                        $notificationAdminNote = 'Đã duyệt biến động số dư, cộng tiền nạp cho user, thưởng user 20% (10% nạp đầu + 10% có người giới thiệu) và thưởng người giới thiệu 10%.';
                     } elseif ($referralBonusForUser > 0) {
-                        $notificationAdminNote = 'Đã duyệt biến động số dư, cộng tiền nạp cho user và thưởng user 15% (10% nạp đầu + 5% có người giới thiệu).';
+                        $notificationAdminNote = 'Đã duyệt biến động số dư, cộng tiền nạp cho user và thưởng user 20% (10% nạp đầu + 10% có người giới thiệu).';
                     } else {
                         $notificationAdminNote = 'Đã duyệt biến động số dư, cộng tiền nạp và thưởng nạp đầu 10% cho user.';
                     }
@@ -245,6 +250,18 @@ class SystemWalletNotificationController extends Controller
                     'handled_at' => now(),
                     'admin_note' => $notificationAdminNote,
                 ]);
+
+                // =========================
+                // GỬI NOTIFICATION
+                // =========================
+
+                // Gửi cho user nạp
+                $user->notify(new DepositApprovedNotification($lockedNotification, $totalUserBonus));
+
+                // Nếu có người giới thiệu thì gửi thêm cho người giới thiệu
+                if ($referrer && $referrerReward > 0) {
+                    $referrer->notify(new ReferralRewardReceivedNotification($user, $referrerReward));
+                }
             });
 
             return redirect()->route('admin.wallet_notifications.index')
@@ -259,6 +276,8 @@ class SystemWalletNotificationController extends Controller
                 ->with('error', 'Không thể duyệt giao dịch lúc này. Vui lòng thử lại.');
         }
     }
+
+    //từ chối
     public function reject(Request $request, SystemWalletNotification $notification)
     {
         $request->validate([

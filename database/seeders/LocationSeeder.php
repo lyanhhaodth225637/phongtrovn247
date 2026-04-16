@@ -24,7 +24,7 @@ class LocationSeeder extends Seeder
 
             $name = $item['TenDiaDiem'];
 
-            // xác định category
+           
             $category_id = $tro;
 
             if (Str::contains(Str::lower($name), 'khách sạn')) {
@@ -35,7 +35,7 @@ class LocationSeeder extends Seeder
                 $category_id = $nhanghi;
             }
 
-            // tạo slug tránh trùng
+           
             $baseSlug = Str::slug($name);
             $slug = $baseSlug;
             $count = 1;

@@ -12,14 +12,14 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // 🔹 Tạo role
+      
         $roles = ['admin', 'landlord', 'user'];
 
         foreach ($roles as $role) {
             Role::firstOrCreate(['name' => $role]);
         }
 
-        // 🔹 Admin
+     
         $admin = User::updateOrCreate(
             ['email' => 'hao@gmail.com'],
             [
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 
         $admin->syncRoles(['admin']);
 
-        // 🔹 User giả lập
+       
         $fakeUsers = [
             ['name' => 'Nguyễn Văn A', 'email' => 'a@gmail.com', 'role' => 'landlord'],
             ['name' => 'Trần Thị B', 'email' => 'b@gmail.com', 'role' => 'landlord'],

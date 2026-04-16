@@ -3,7 +3,18 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/admin/post-create.css') }}">
 <div class="container">
+<style>.combo-wrapper input {
+    width: 100%;
+}
 
+.combo-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.combo-dropdown::-webkit-scrollbar-thumb {
+    background: #d1d3e2;
+    border-radius: 999px;
+}</style>
     {{-- ── Page Heading ──────────────────────────────────────── --}}
     <div class="page-heading">
         <div>

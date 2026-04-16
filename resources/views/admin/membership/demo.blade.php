@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.frontend.app')
 @section('content')
 
     <link
@@ -378,12 +377,12 @@
     <div class="container py-5" id="pricingContainer">
 
         {{-- VAT Toggle --}}
-        <div class="d-flex align-items-center mb-4">
-            <label class="vat-toggle-wrap mb-0" for="vatToggle">
-                <input class="form-check-input" type="checkbox" id="vatToggle" role="switch">
-                <span id="vatLabel">Giá chưa bao gồm VAT</span>
-            </label>
-        </div>
+        <!-- <div class="d-flex align-items-center mb-4">
+                    <label class="vat-toggle-wrap mb-0" for="vatToggle">
+                        <input class="form-check-input" type="checkbox" id="vatToggle" role="switch">
+                        <span id="vatLabel">Giá chưa bao gồm VAT</span>
+                    </label>
+                </div> -->
 
         @if($membership->isEmpty())
             <div class="alert alert-warning">Chưa có gói dịch vụ nào.</div>
@@ -429,7 +428,11 @@
 
                                 {{-- Row giá --}}
                                 <tr @if($isLast) class="row-highlight" @endif>
-                                    <td class="row-label">Giá {{ number_format($days) }} ngày</td>
+                                    @if($days < 7)
+                                        <td class="row-label">Giá {{ number_format($days) }} ngày (miễn phí)</td>
+                                    @else
+                                        <td class="row-label">Giá {{ number_format($days) }} ngày</td>
+                                    @endif
 
                                     @foreach($membership as $m)
                                         @php $pkg = $m->membershipPackages->firstWhere('duration_days', $days); @endphp
@@ -443,7 +446,7 @@
                                                     @endif
                                                 </div>
                                             @else
-                                                <span class="price-na">—</span>
+                                                <span class="price-na">Không có</span>
                                             @endif
                                         </td>
                                     @endforeach
@@ -501,11 +504,8 @@
                                 <td class="action-cell row-label"></td>
                                 @foreach($membership as $idx => $m)
                                     <td class="action-cell">
-                                        @if($loop->first)
-                                            <a href="#" class="btn-cz">Đăng ký</a>
-                                        @else
-                                            <a href="#" class="btn-cz-outline">Đăng ký</a>
-                                        @endif
+                                        <a href="{{ route('frontend.membership.show', ['id' => $m->id, 'slug' => $m->slug]) }}"
+                                            class="btn-cz-outline">Đăng ký</a>
                                     </td>
                                 @endforeach
                             </tr>
@@ -516,7 +516,7 @@
 
                 <div class="footnote">
                     <i class="fas fa-info-circle me-1" style="color:var(--cz-primary)"></i>
-                    Giá mặc định chưa bao gồm VAT. Bật toggle để xem giá có VAT (8%).
+                    Giá mặc định chưa bao gồm VAT (8%).
                     Gói <span style="color:#f97316;font-weight:700;">Tạm dừng</span> không thể đăng ký.
                 </div>
                 <div style="height:20px"></div>

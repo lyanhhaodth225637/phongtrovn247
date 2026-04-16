@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Throwable;
+use App\Models\User;
+use App\Notifications\DepositRequestSubmittedNotification;
 
 class WalletController extends Controller
 {
@@ -39,6 +41,8 @@ class WalletController extends Controller
     //     return view('user.wallet.deposit');
     // }
 
+
+    //nạp
     public function storeDeposit(Request $request)
     {
         $request->validate([
@@ -59,14 +63,11 @@ class WalletController extends Controller
                     ->exists();
 
                 if ($hasOpenDeposit) {
-                    throw ValidationException::withMessages([
-                        'amount' => 'Bạn đang có giao dịch nạp tiền chưa được duyệt. Vui lòng chờ hệ thống xử lý.',
-                    ]);
+                    return back()->withInput()->with('error', 'Bạn đang có giao dịch nạp tiền chưa hoàn thành. Vui lòng chờ hệ thống xử lý.');
+
                 }
 
-                if ($hasOpenDeposit) {
-                    throw new \RuntimeException('Bạn đang có một giao dịch nạp tiền chưa hoàn tất. Chỉ có thể nạp tiếp khi giao dịch trước đã được duyệt hoặc bị từ chối.');
-                }
+
 
                 $systemWallet = SystemWallet::where('is_active', true)
                     ->lockForUpdate()
@@ -107,6 +108,8 @@ class WalletController extends Controller
         }
     }
 
+
+    //nạp
     public function fakeBank(WalletTransaction $transaction)
     {
         if ($transaction->user_id !== Auth::id()) {
@@ -126,6 +129,7 @@ class WalletController extends Controller
         return view('user.wallet.fake-bank', compact('transaction'));
     }
 
+    //xác nhận nạp
     public function confirmTransfer(WalletTransaction $transaction)
     {
         if ($transaction->user_id !== Auth::id()) {
@@ -174,7 +178,7 @@ class WalletController extends Controller
                 ]);
 
                 // 2) Tạo biến động số dư để admin kiểm duyệt
-                SystemWalletNotification::create([
+                $systemWalletNotification = SystemWalletNotification::create([
                     'system_wallet_id' => $systemWallet->id,
                     'wallet_transaction_id' => $lockedTransaction->id,
                     'sender_name' => Auth::user()->name,
@@ -193,6 +197,15 @@ class WalletController extends Controller
                     'admin_note' => null,
                 ]);
 
+                // Gửi thông báo cho admin
+                $admins = User::role('admin')->get();
+
+                foreach ($admins as $admin) {
+                    $admin->notify(
+                        new DepositRequestSubmittedNotification($systemWalletNotification)
+                    );
+                }
+
                 // 3) Đánh dấu giao dịch user đang chờ admin duyệt
                 $lockedTransaction->update([
                     'status' => 'processing',
@@ -201,12 +214,13 @@ class WalletController extends Controller
                 ]);
             });
 
-            return redirect()->route('user.wallet.index')
+            return redirect()->route('user.wallet.deposit-history')
                 ->with('success', 'Đã ghi nhận nạp tiền vào ví hệ thống. Vui lòng chờ admin kiểm duyệt.');
         } catch (\RuntimeException $e) {
             return redirect()->route('user.wallet.index')
                 ->with('error', $e->getMessage());
         } catch (Throwable $e) {
+            // dd($e->getMessage());
             report($e);
 
             return redirect()->route('user.wallet.index')
@@ -259,6 +273,7 @@ class WalletController extends Controller
     }
 
 
+    // lịch sử nạp tiền
     public function depositHistory()
     {
         $transactions = WalletTransaction::where('user_id', Auth::id())
@@ -266,6 +281,16 @@ class WalletController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('user.wallet.history', compact('transactions'));
+        return view('user.wallet.history-deposit', compact('transactions'));
+    }
+
+    //lịch sử thanh toán
+    public function paymentHistory()
+    {
+        $transactions = WalletTransaction::where('user_id', Auth::id())
+            ->whereIn('type', ['push_post', 'renew_membership','buy_membership'])
+            ->latest()
+            ->paginate(10);
+        return view('user.wallet.history-payment', compact('transactions'));
     }
 }

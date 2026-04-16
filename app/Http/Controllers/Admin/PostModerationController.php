@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\PostModeration;
 use App\Models\Post;
 
+use App\Notifications\PostRejectedNotification;
 class PostModerationController extends Controller
 {
     public function reject(Request $request, $id)
@@ -16,7 +17,7 @@ class PostModerationController extends Controller
             'reason_detail' => 'nullable|string'
         ]);
 
-        $post = Post::findOrFail($id);
+        $post = Post::with('user')->findOrFail($id);
 
         PostModeration::create([
             'post_id' => $post->id,
@@ -26,10 +27,16 @@ class PostModerationController extends Controller
             'user_id' => auth()->id(),
         ]);
 
- 
         $post->update([
             'status' => 'rejected'
         ]);
+
+        // gửi thông báo cho chủ bài viết
+        $post->user->notify(new PostRejectedNotification(
+            $post,
+            $data['reason_type'],
+            $data['reason_detail']
+        ));
 
         return back()->with('success', 'Đã từ chối bài');
     }
