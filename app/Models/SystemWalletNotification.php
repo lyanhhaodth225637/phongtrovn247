@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 class SystemWalletNotification extends Model
 {
     protected $fillable = [
@@ -22,7 +23,25 @@ class SystemWalletNotification extends Model
         'handled_at',
         'admin_note',
     ];
+    use LogsActivity;
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('system_wallet_notification')
+            ->logOnly([
+                'sender_name',
+                'sender_account_number',
+                'receiver_account_number',
+                'bank_name',
+                'amount',
+                'transfer_content',
+                'match_status',
+                'wallet_transaction_id',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
     public function walletTransaction()
     {
         return $this->belongsTo(WalletTransaction::class);

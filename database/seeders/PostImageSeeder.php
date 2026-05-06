@@ -10,10 +10,7 @@ use App\Models\PostImage;
 
 class PostImageSeeder extends Seeder
 {
-    /**
-     * Unsplash source — không cần API key, trả về ảnh ngẫu nhiên theo keyword.
-     * Format: https://source.unsplash.com/featured/{width}x{height}/?{keyword}
-     */
+    
     private array $keywords = [
         'room,apartment',
         'bedroom,interior',
@@ -31,7 +28,7 @@ class PostImageSeeder extends Seeder
             return;
         }
 
-        // Đảm bảo thư mục tồn tại
+       
         Storage::disk('public')->makeDirectory('posts');
 
         foreach ($posts as $post) {

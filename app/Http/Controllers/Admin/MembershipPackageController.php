@@ -21,15 +21,15 @@ class MembershipPackageController extends Controller
         $data = $request->validate([
             'membership_id' => 'required|exists:memberships,id',
             'duration_days' => 'required|integer|min:1',
-            'price' => 'required|nueric|min:0',
+            'price' => 'required|numeric|min:0',
             'is_active' => 'nullable|boolean',
             'description' => 'nullable|string',
         ]);
 
-        // checkbox nếu không check sẽ không gửi → set mặc định = 0
+       
         $data['is_active'] = $request->has('is_active');
 
-        // tránh trùng (membership + duration)
+        
         $exists = MembershipPackage::where('membership_id', $data['membership_id'])->where('duration_days', $data['duration_days'])->exists();
 
         if ($exists) {

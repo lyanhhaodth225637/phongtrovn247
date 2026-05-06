@@ -12,26 +12,42 @@ class MembershipPackageSeeder extends Seeder
 {
     public function run(): void
     {
+        // $packages = [
+        //     // VIP 5
+        //     ['membership' => 'vip-5', 'duration_days' => 7, 'price' => 100000],
+        //     ['membership' => 'vip-5', 'duration_days' => 30, 'price' => 350000],
+
+        //     // VIP 4
+        //     ['membership' => 'vip-4', 'duration_days' => 7, 'price' => 80000],
+        //     ['membership' => 'vip-4', 'duration_days' => 30, 'price' => 280000],
+
+        //     // VIP 3
+        //     ['membership' => 'vip-3', 'duration_days' => 7, 'price' => 60000],
+        //     ['membership' => 'vip-3', 'duration_days' => 30, 'price' => 210000],
+
+        //     // VIP 2
+        //     ['membership' => 'vip-2', 'duration_days' => 7, 'price' => 40000],
+        //     ['membership' => 'vip-2', 'duration_days' => 30, 'price' => 140000],
+
+        //     // VIP 1 Free
+        //     ['membership' => 'vip-1', 'duration_days' => 36500, 'price' => 0],
+
+
+        // ];
         $packages = [
-            // VIP 5
-            ['membership' => 'vip-5', 'duration_days' => 7, 'price' => 100000],
-            ['membership' => 'vip-5', 'duration_days' => 30, 'price' => 350000],
+            
+            ['membership' => 'de-xuat', 'duration_days' => 7, 'price' => 100000],
+            ['membership' => 'de-xuat', 'duration_days' => 30, 'price' => 350000],
 
-            // VIP 4
-            ['membership' => 'vip-4', 'duration_days' => 7, 'price' => 80000],
-            ['membership' => 'vip-4', 'duration_days' => 30, 'price' => 280000],
+           
+            ['membership' => 'noi-bat', 'duration_days' => 7, 'price' => 80000],
+            ['membership' => 'noi-bat', 'duration_days' => 30, 'price' => 280000],
 
-            // VIP 3
-            ['membership' => 'vip-3', 'duration_days' => 7, 'price' => 60000],
-            ['membership' => 'vip-3', 'duration_days' => 30, 'price' => 210000],
 
-            // VIP 2
-            ['membership' => 'vip-2', 'duration_days' => 7, 'price' => 40000],
-            ['membership' => 'vip-2', 'duration_days' => 30, 'price' => 140000],
+          
+            ['membership' => 'thuong', 'duration_days' => 3, 'price' => 0],
 
-            // VIP 1
-            ['membership' => 'vip-1', 'duration_days' => 7, 'price' => 20000],
-            ['membership' => 'vip-1', 'duration_days' => 30, 'price' => 70000],
+
         ];
 
         foreach ($packages as $item) {

@@ -3,7 +3,6 @@
 @section('content')
     <style>
         .wallet-wrap {
-            /* max-width: 480px; */
             margin: 0 auto;
             padding: 2rem 1rem;
         }
@@ -27,26 +26,6 @@
             gap: 12px;
         }
 
-        .balance-icon {
-            width: 44px;
-            height: 44px;
-            background: #fff;
-            border: 1px solid #e9ecef;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .balance-icon svg {
-            width: 20px;
-            height: 20px;
-            stroke: #6c757d;
-            fill: none;
-            stroke-width: 1.5;
-        }
-
         .balance-meta {
             flex: 1;
         }
@@ -62,16 +41,6 @@
             font-weight: 700;
             color: #111;
             letter-spacing: -0.5px;
-        }
-
-        .balance-badge {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-            white-space: nowrap;
         }
 
         .deposit-card {
@@ -192,23 +161,19 @@
 
         {{-- Thẻ số dư --}}
         <div class="balance-card">
-            <!-- <div class="balance-icon">
-                <svg viewBox="0 0 24 24">
-                    <rect x="2" y="5" width="20" height="14" rx="2" />
-                    <path d="M16 12h2" />
-                </svg>
-            </div> -->
             <div class="balance-meta">
                 <div class="balance-label">Số dư hiện tại</div>
-                <div class="balance-amount">{{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }} đ</div>
+                <div class="balance-amount">
+                    {{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }} đ
+                </div>
             </div>
-            <!-- <div class="balance-badge">Hoạt động</div> -->
         </div>
 
         {{-- Flash messages --}}
         @if(session('success'))
             <div class="alert alert-success mb-3">{{ session('success') }}</div>
         @endif
+
         @if(session('error'))
             <div class="alert alert-danger mb-3">{{ session('error') }}</div>
         @endif
@@ -232,18 +197,27 @@
                 @csrf
 
                 <span class="field-label">Hoặc nhập số tiền khác</span>
+
                 <div class="input-wrap">
                     <input type="number" id="amountInput" name="amount" min="10000" step="1000" placeholder="100000"
                         value="{{ old('amount') }}" required oninput="clearPresets()">
+
                     <span class="input-unit">đ</span>
                 </div>
-                <div class="input-hint">Tối thiểu 10.000đ · Bội số 1.000đ</div>
+
+                <div class="input-hint">
+                    Tối thiểu 10.000đ · Bội số 1.000đ
+                </div>
 
                 @error('amount')
-                    <div class="text-danger mt-1" style="font-size:13px">{{ $message }}</div>
+                    <div class="text-danger mt-1" style="font-size:13px">
+                        {{ $message }}
+                    </div>
                 @enderror
 
-                <button type="submit" class="btn-deposit">Tiếp tục →</button>
+                <button type="submit" class="btn-deposit">
+                    Tiếp tục →
+                </button>
             </form>
         </div>
     </div>
@@ -254,6 +228,7 @@
             document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
+
         function clearPresets() {
             document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
         }

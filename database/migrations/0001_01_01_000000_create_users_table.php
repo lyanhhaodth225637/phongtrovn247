@@ -52,5 +52,9 @@ return new class extends Migration {
         Schema::dropIfExists('sessions');
     }
 
-
+    public function savedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'saved_posts', 'user_id', 'post_id')
+            ->withTimestamps();
+    }
 };
