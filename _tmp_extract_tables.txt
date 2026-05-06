@@ -1,8 +1,0 @@
-﻿from docx import Document
-path = r"D:\Thực Tập\DoAnTotNghiep\PhongTroVN247_v3.docx"
-doc = Document(path)
-for ti, table in enumerate(doc.tables, 1):
-    print(f'===TABLE {ti}===')
-    for ri, row in enumerate(table.rows, 1):
-        cells = [' '.join(c.text.split()) for c in row.cells]
-        print(f'{ri}: ' + ' | '.join(cells))
