@@ -162,7 +162,7 @@
                   <div>
                     <div class="adrop-balance-label">Số dư tài khoản</div>
                     <div class="adrop-balance-num">
-                      {{ number_format(auth()->user()->balance ?? 0) }}đ
+                      {{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}đ
                     </div>
                   </div>
                   <a href="{{ route('user.wallet.index') }}" class="adrop-topup">
@@ -607,7 +607,7 @@
           input.closest('.feature-chip')?.classList.add('checked');
         }
       });
-    });
+    }); 
   </script>
   @stack('scripts')
 

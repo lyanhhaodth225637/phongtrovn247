@@ -896,7 +896,7 @@
                                     <div>
                                         <div class="adrop-balance-label">Số dư tài khoản</div>
                                         <div class="adrop-balance-num">
-                                            {{ number_format(auth()->user()->balance ?? 0) }}đ
+                                            {{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}đ
                                         </div>
                                     </div>
                                     <a href="{{ route('user.wallet.index') }}" class="adrop-topup">
@@ -997,7 +997,7 @@
                 <div class="sidebar-balance">
                     <div>
                         <div class="sidebar-balance-label">Số dư tài khoản</div>
-                        <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0) }}đ</div>
+                        <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}đ</div>
                     </div>
                     <a href="{{ route('user.wallet.index') }}" class="sidebar-topup">
                         <i class="bi bi-lightning-fill"></i> Nạp tiền
@@ -1051,7 +1051,7 @@
                     <div class="sidebar-balance">
                         <div>
                             <div class="sidebar-balance-label">Số dư tài khoản</div>
-                            <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0) }}đ</div>
+                            <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}đ</div>
                         </div>
                         <a href="{{ route('user.wallet.index') }}" class="sidebar-topup">
                             <i class="bi bi-lightning-fill"></i> Nạp tiền

@@ -444,6 +444,7 @@
 
                     @if($post->latitude && $post->longitude)
                         <div class="pd-field pd-map-wrapper" style="grid-column: 1 / -1">
+                           
                             <div id="pd-map" style="height:320px;"></div>
                         </div>
                     @endif
@@ -616,19 +617,43 @@
 
                 const map = L.map('pd-map', {
                     center: [lat, lng],
-                    zoom: 16,
+                    zoom: 17,
                     scrollWheelZoom: false
                 });
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; OpenStreetMap contributors'
-                }).addTo(map);
+                const layers = {
+                    street: L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                        attribution: 'Google',
+                        maxZoom: 20
+                    }),
+                    satellite: L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                        attribution: 'Google',
+                        maxZoom: 20
+                    }),
+                    hybrid: L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                        attribution: 'Google',
+                        maxZoom: 20
+                    }),
+                };
 
-                const marker = L.marker([lat, lng]).addTo(map);
+                let current = layers.street.addTo(map);
 
-                if (address) {
-                    marker.bindPopup(address).openPopup();
-                }
+                L.marker([lat, lng]).addTo(map)
+                    .bindPopup(address ? `<div style="font-size:13px;max-width:200px">${address}</div>` : '')
+                    .openPopup();
+
+                document.querySelectorAll('.map-tb-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const key = this.dataset.layer;
+                        if (!layers[key] || layers[key] === current) return;
+
+                        map.removeLayer(current);
+                        current = layers[key].addTo(map);
+
+                        document.querySelectorAll('.map-tb-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
             });
         </script>
     @endif
