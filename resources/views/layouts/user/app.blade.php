@@ -18,9 +18,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ asset('css/frontend/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/all.min.css') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/logo/logo.png') }}">
 
-    {{-- CSS từ trang con --}}
     <style>
+        /* ═══════════════════════════════════════════════
+           LAYOUT WRAPPER
+        ═══════════════════════════════════════════════ */
         .qltd-wrap {
             display: grid;
             grid-template-columns: 260px 1fr;
@@ -29,13 +33,13 @@
             padding: 24px 0 48px;
         }
 
-        /* ══ SIDEBAR ══ */
+        /* ══ SIDEBAR DESKTOP ══ */
         .qltd-sidebar {
             position: sticky;
             top: 76px;
         }
 
-        /* Profile card */
+        /* ══ PROFILE CARD ══ */
         .sidebar-profile {
             background: var(--surface);
             border: 1.5px solid var(--border);
@@ -80,7 +84,7 @@
             margin-top: 1px;
         }
 
-        /* Balance strip */
+        /* ══ BALANCE STRIP ══ */
         .sidebar-balance {
             display: flex;
             align-items: center;
@@ -123,7 +127,7 @@
             color: #fff;
         }
 
-        /* Nav menu */
+        /* ══ NAV MENU ══ */
         .sidebar-nav {
             padding: 6px 0;
         }
@@ -189,7 +193,7 @@
             background: #fff1f2;
         }
 
-        /* Support strip */
+        /* ══ SUPPORT STRIP ══ */
         .sidebar-support {
             background: var(--surface);
             border: 1.5px solid var(--border);
@@ -222,10 +226,7 @@
             color: var(--text);
         }
 
-        /* ══ MAIN CONTENT ══ */
-        .qltd-main {}
-
-        /* Page header */
+        /* ══ PAGE HEADER ══ */
         .qltd-page-head {
             display: flex;
             align-items: center;
@@ -250,7 +251,7 @@
             height: 22px;
         }
 
-        /* Status tabs */
+        /* ══ STATUS TABS ══ */
         .qltd-tabs {
             display: flex;
             border-bottom: 2px solid var(--border);
@@ -258,6 +259,7 @@
             overflow-x: auto;
             scrollbar-width: none;
             gap: 0;
+            -webkit-overflow-scrolling: touch;
         }
 
         .qltd-tabs::-webkit-scrollbar {
@@ -308,7 +310,7 @@
             color: #fff;
         }
 
-        /* Search bar */
+        /* ══ SEARCH BAR ══ */
         .qltd-search-row {
             display: flex;
             gap: 8px;
@@ -377,7 +379,7 @@
             color: #fff;
         }
 
-        /* Empty state */
+        /* ══ EMPTY STATE ══ */
         .qltd-empty {
             background: var(--surface);
             border: 1.5px solid var(--border);
@@ -415,7 +417,7 @@
             line-height: 1.7;
         }
 
-        /* Post list card */
+        /* ══ POST MANAGE CARD ══ */
         .post-manage-card {
             background: var(--surface);
             border: 1.5px solid var(--border);
@@ -586,7 +588,7 @@
             background: #dcfce7;
         }
 
-        /* Expire warning */
+        /* ══ EXPIRE WARNING ══ */
         .post-expire-bar {
             display: flex;
             align-items: center;
@@ -599,7 +601,9 @@
             font-weight: 500;
         }
 
-        /* ══ MOBILE: sidebar → bottom sheet / drawer ══ */
+        /* ═══════════════════════════════════════════════
+           MOBILE SIDEBAR DRAWER
+        ═══════════════════════════════════════════════ */
         .mobile-sidebar-btn {
             display: none;
             position: fixed;
@@ -628,12 +632,15 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, .45);
+            background: rgba(0, 0, 0, .5);
             z-index: 1040;
+            opacity: 0;
+            transition: opacity .28s ease;
         }
 
         .sidebar-drawer-overlay.show {
             display: block;
+            opacity: 1;
         }
 
         .sidebar-drawer {
@@ -641,13 +648,17 @@
             top: 0;
             left: 0;
             bottom: 0;
-            width: 280px;
-            background: var(--surface);
-            z-index: 1050;
+            width: 285px;
+            max-width: 85vw;
+            background: var(--surface, #fff);
+            z-index: 9999;
             transform: translateX(-100%);
             transition: transform .28s cubic-bezier(.4, 0, .2, 1);
             overflow-y: auto;
-            box-shadow: 4px 0 24px rgba(0, 0, 0, .12);
+            overflow-x: hidden;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, .15);
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
         }
 
         .sidebar-drawer.open {
@@ -669,17 +680,32 @@
             justify-content: center;
             font-size: .8rem;
             color: var(--text2);
+            z-index: 10;
+            transition: background .15s;
         }
 
-        /* ══ RESPONSIVE ══ */
+        .sidebar-drawer-close:hover {
+            background: rgba(0, 0, 0, .12);
+        }
+
+        .sidebar-drawer .sidebar-profile {
+            margin-bottom: 0;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════════ */
         @media (max-width: 900px) {
             .qltd-wrap {
                 grid-template-columns: 1fr;
+                padding: 16px 0 80px;
             }
 
             .qltd-sidebar {
                 display: none;
-                /* ẩn, dùng drawer thay thế */
             }
 
             .mobile-sidebar-btn {
@@ -718,6 +744,19 @@
                 padding: 9px 12px;
                 font-size: .78rem;
             }
+
+            .qltd-search-row {
+                flex-direction: column;
+            }
+
+            .qltd-search-wrap {
+                min-width: unset;
+            }
+
+            .btn-new-post {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 400px) {
@@ -728,6 +767,10 @@
 
             .post-manage-actions {
                 gap: 4px;
+            }
+
+            .sidebar-balance-num {
+                font-size: .88rem;
             }
         }
     </style>
@@ -763,22 +806,65 @@
                         {{-- Chuông thông báo --}}
                         <div class="header-icon-btn" id="notifToggle">
                             <i class="bi bi-bell"></i>
-                            <span class="header-icon-badge" id="notifCount" style="display:none">0</span>
+
+                            @if(($headerNotificationCount ?? 0) > 0)
+                                <span class="header-icon-badge" id="notifCount">
+                                    {{ ($headerNotificationCount ?? 0) > 9 ? '9+' : ($headerNotificationCount ?? 0) }}
+                                </span>
+                            @endif
+
                             <div class="header-dropdown notif-dropdown" id="notifDropdown">
                                 <div class="hdrop-head">
                                     <span>Thông báo</span>
-                                    <a href="#" style="font-size:0.72rem;color:#1a56db;font-weight:600">Đánh dấu đã đọc</a>
+                                    <form action="{{ route('user.notifications.readAll') }}" method="POST"
+                                        style="margin:0;">
+                                        @csrf
+                                        <button type="submit"
+                                            style="font-size:0.72rem;color:#1a56db;font-weight:600;background:none;border:none;padding:0">
+                                            Đánh dấu đã đọc
+                                        </button>
+                                    </form>
                                 </div>
-                                <div class="hdrop-empty">
-                                    <i class="bi bi-bell-slash"
-                                        style="font-size:1.8rem;color:#cbd5e1;display:block;margin-bottom:6px"></i>
-                                    Chưa có thông báo nào
-                                </div>
+
+                                @forelse(($headerNotifications ?? collect()) as $notification)
+                                    <a href="{{ route('user.notifications.read', $notification->id) }}"
+                                        class="notif-item {{ is_null($notification->read_at) ? 'unread' : '' }}"
+                                        style="display:flex;gap:10px;padding:12px 14px;text-decoration:none;border-bottom:1px solid #eef2f7">
+
+                                        <div
+                                            style="width:38px;height:38px;border-radius:50%;background:#eff6ff;color:#2563eb;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                            <i class="{{ $notification->data['icon'] ?? 'bi bi-bell' }}"></i>
+                                        </div>
+
+                                        <div style="flex:1;min-width:0">
+                                            <div style="font-size:.82rem;font-weight:600;color:#111827;margin-bottom:2px">
+                                                {{ $notification->data['title'] ?? 'Thông báo' }}
+                                            </div>
+                                            <div style="font-size:.78rem;color:#6b7280;line-height:1.4">
+                                                {{ $notification->data['message'] ?? '' }}
+                                            </div>
+                                            <div style="font-size:.72rem;color:#9ca3af;margin-top:4px">
+                                                {{ $notification->created_at->diffForHumans() }}
+                                            </div>
+                                        </div>
+
+                                        @if(is_null($notification->read_at))
+                                            <div style="width:8px;height:8px;background:#2563eb;border-radius:50%;margin-top:6px">
+                                            </div>
+                                        @endif
+                                    </a>
+                                @empty
+                                    <div class="hdrop-empty">
+                                        <i class="bi bi-bell-slash"
+                                            style="font-size:1.8rem;color:#cbd5e1;display:block;margin-bottom:6px"></i>
+                                        Chưa có thông báo nào
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 
                         {{-- Bài viết đã lưu --}}
-                        <a href="#" class="header-icon-btn" title="Bài viết đã lưu">
+                        <a href="{{ route('saved-post.index') }}" class="header-icon-btn" title="Bài viết đã lưu">
                             <i class="bi bi-bookmark"></i>
                         </a>
 
@@ -792,6 +878,77 @@
                                 <i class="bi bi-chevron-down header-chevron" id="avatarChevron"></i>
                             </div>
 
+                            <div class="dropdown-menu dropdown-menu-end avatar-dropdown p-0"
+                                style="width:270px;border-radius:14px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.12);overflow:hidden;margin-top:8px">
+
+                                {{-- Profile info --}}
+                                <div class="adrop-profile">
+                                    <img src="{{ asset('storage/' . (auth()->user()->avatar ?? 'default/avt_default.png')) }}"
+                                        class="adrop-avatar" alt="">
+                                    <div>
+                                        <div class="adrop-name">{{ auth()->user()->name }}</div>
+                                        <div class="adrop-phone">{{ auth()->user()->phone ?? auth()->user()->email }}</div>
+                                    </div>
+                                </div>
+
+                                {{-- Số dư --}}
+                                <div class="adrop-balance">
+                                    <div>
+                                        <div class="adrop-balance-label">Số dư tài khoản</div>
+                                        <div class="adrop-balance-num">
+                                            {{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}đ
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('user.wallet.index') }}" class="adrop-topup">
+                                        <i class="bi bi-credit-card-2-front"></i> Nạp tiền
+                                    </a>
+                                </div>
+
+                                {{-- Quản lý tin đăng --}}
+                                <div class="adrop-section-title">
+                                    Quản lý tin đăng
+                                    <a href="{{ route('user.post.index') }}" class="adrop-viewall">Xem tất cả</a>
+                                </div>
+                                <div class="adrop-post-stats">
+                                    <a href="{{ route('frontend.profile.index') }}" class="adrop-stat-item">
+                                        <i class="bi bi-folder2"></i>
+                                        <span>Tất cả</span>
+                                    </a>
+                                    <a href="{{ route('user.post.index') }}" class="adrop-stat-item">
+                                        <i class="bi bi-check-circle"></i>
+                                        <span>Đang hiển thị</span>
+                                    </a>
+                                    <a href="{{ route('user.post.index') }}" class="adrop-stat-item">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <span>Hết hạn</span>
+                                    </a>
+                                    <a href="{{ route('user.post.index') }}" class="adrop-stat-item">
+                                        <i class="bi bi-eye-slash"></i>
+                                        <span>Tin ẩn</span>
+                                    </a>
+                                </div>
+
+                                <div class="adrop-divider"></div>
+
+                                <a href="{{ route('frontend.membership.index') }}" class="adrop-menu-item">
+                                    <i class="bi bi-tag"></i> Bảng giá dịch vụ
+                                </a>
+                                <a href="{{ route('user.wallet.deposit-history') }}" class="adrop-menu-item">
+                                    <i class="bi bi-credit-card"></i> Quản lý giao dịch
+                                </a>
+                                <a href="{{ route('frontend.profile.index') }}" class="adrop-menu-item">
+                                    <i class="bi bi-person"></i> Quản lý tài khoản
+                                </a>
+
+                                <div class="adrop-divider"></div>
+
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="adrop-menu-item adrop-logout">
+                                        <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                                    </button>
+                                </form>
+                            </div>
                         </div>
 
                     @else
@@ -800,7 +957,8 @@
                         </a>
                     @endauth
 
-                    <a href="#" class="btn-post">
+                    {{-- Nút đăng tin --}}
+                    <a href="{{ route('user.post.create') }}" class="btn-post nav-post-btn">
                         <i class="bi bi-plus-circle"></i>
                         <span class="d-none d-sm-inline">Đăng tin</span>
                     </a>
@@ -839,21 +997,31 @@
                 <div class="sidebar-balance">
                     <div>
                         <div class="sidebar-balance-label">Số dư tài khoản</div>
-                        <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0) }}đ</div>
+                        <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}đ</div>
                     </div>
-                    <a href="{{ route('user.wallet.index') }}" class="sidebar-topup"><i class="bi bi-lightning-fill"></i> Nạp tiền</a>
+                    <a href="{{ route('user.wallet.index') }}" class="sidebar-topup">
+                        <i class="bi bi-lightning-fill"></i> Nạp tiền
+                    </a>
                 </div>
                 <nav class="sidebar-nav">
-                    <a href="#" class="sidebar-nav-item"><i class="bi bi-award"></i> Hạng thành viên</a>
+                    <a href="{{ route('user.rank.index') }}" class="sidebar-nav-item"><i class="bi bi-award"></i> Gói
+                        thành viên</a>
                     <a href="{{ route('user.post.create') }}" class="sidebar-nav-item"><i
                             class="bi bi-pencil-square"></i> Đăng tin mới</a>
-                    <a href="#" class="sidebar-nav-item active"><i class="bi bi-list-ul"></i> Danh sách tin đăng</a>
-                    <a href="#" class="sidebar-nav-item"><i class="bi bi-wallet2"></i> Nạp tiền vào tài khoản</a>
-                    <a href="#" class="sidebar-nav-item"><i class="bi bi-clock-history"></i> Lịch sử nạp tiền</a>
-                    <a href="#" class="sidebar-nav-item"><i class="bi bi-receipt"></i> Lịch sử thanh toán</a>
-                    <a href="#" class="sidebar-nav-item"><i class="bi bi-tag"></i> Bảng giá dịch vụ</a>
-                    <a href="#" class="sidebar-nav-item"><i class="bi bi-person"></i> Quản lý tài khoản</a>
-                    <a href="#" class="sidebar-nav-item"><i class="bi bi-gift"></i> Giới thiệu bạn bè</a>
+                    <a href="{{ route('user.post.index') }}" class="sidebar-nav-item"><i class="bi bi-list-ul"></i> Danh
+                        sách tin đăng</a>
+                    <a href="{{ route('user.wallet.index') }}" class="sidebar-nav-item"><i class="bi bi-wallet2"></i>
+                        Nạp tiền vào tài khoản</a>
+                    <a href="{{ route('user.wallet.deposit-history') }}" class="sidebar-nav-item"><i
+                            class="bi bi-clock-history"></i> Lịch sử nạp tiền</a>
+                    <a href="{{ route('user.wallet.payment-history') }}" class="sidebar-nav-item"><i
+                            class="bi bi-receipt"></i> Lịch sử thanh toán</a>
+                    <a href="{{ route('frontend.membership.index') }}" class="sidebar-nav-item"><i
+                            class="bi bi-tag"></i> Bảng giá dịch vụ</a>
+                    <a href="{{ route('frontend.profile.index') }}" class="sidebar-nav-item"><i class="bi bi-person"></i>
+                        Quản lý tài khoản</a>
+                    <a href="{{ route('user.referred.index') }}" class="sidebar-nav-item"><i class="bi bi-gift"></i>
+                        Giới thiệu bạn bè</a>
                     <hr class="sidebar-nav-divider">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -883,21 +1051,31 @@
                     <div class="sidebar-balance">
                         <div>
                             <div class="sidebar-balance-label">Số dư tài khoản</div>
-                            <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0) }}đ</div>
+                            <div class="sidebar-balance-num">{{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}đ</div>
                         </div>
-                        <a href="{{ route('user.wallet.index') }}" class="sidebar-topup"><i class="bi bi-lightning-fill"></i> Nạp tiền</a>
+                        <a href="{{ route('user.wallet.index') }}" class="sidebar-topup">
+                            <i class="bi bi-lightning-fill"></i> Nạp tiền
+                        </a>
                     </div>
                     <nav class="sidebar-nav">
-                        <a href="#" class="sidebar-nav-item"><i class="bi bi-award"></i> Hạng thành viên</a>
+                        <a href="{{ route('user.rank.index') }}" class="sidebar-nav-item"><i class="bi bi-award"></i>
+                            Gói thành viên</a>
                         <a href="{{ route('user.post.create') }}" class="sidebar-nav-item"><i
                                 class="bi bi-pencil-square"></i> Đăng tin mới</a>
-                        <a href="#" class="sidebar-nav-item active"><i class="bi bi-list-ul"></i> Danh sách tin đăng</a>
-                        <a href="#" class="sidebar-nav-item"><i class="bi bi-wallet2"></i> Nạp tiền vào tài khoản</a>
-                        <a href="{{ route('user.wallet.deposit-histor') }}" class="sidebar-nav-item"><i class="bi bi-clock-history"></i> Lịch sử nạp tiền</a>
-                        <a href="#" class="sidebar-nav-item"><i class="bi bi-receipt"></i> Lịch sử thanh toán</a>
-                        <a href="#" class="sidebar-nav-item"><i class="bi bi-tag"></i> Bảng giá dịch vụ</a>
-                        <a href="#" class="sidebar-nav-item"><i class="bi bi-person"></i> Quản lý tài khoản</a>
-                        <a href="#" class="sidebar-nav-item"><i class="bi bi-gift"></i> Giới thiệu bạn bè</a>
+                        <a href="{{ route('user.post.index') }}" class="sidebar-nav-item"><i class="bi bi-list-ul"></i>
+                            Danh sách tin đăng</a>
+                        <a href="{{ route('user.wallet.index') }}" class="sidebar-nav-item"><i
+                                class="bi bi-wallet2"></i> Nạp tiền vào tài khoản</a>
+                        <a href="{{ route('user.wallet.deposit-history') }}" class="sidebar-nav-item"><i
+                                class="bi bi-clock-history"></i> Lịch sử nạp tiền</a>
+                        <a href="{{ route('user.wallet.payment-history') }}" class="sidebar-nav-item"><i
+                                class="bi bi-receipt"></i> Lịch sử thanh toán</a>
+                        <a href="{{ route('frontend.membership.index') }}" class="sidebar-nav-item"><i
+                                class="bi bi-tag"></i> Bảng giá dịch vụ</a>
+                        <a href="{{ route('frontend.profile.index') }}" class="sidebar-nav-item"><i
+                                class="bi bi-person"></i> Quản lý tài khoản</a>
+                        <a href="{{ route('user.referred.index') }}" class="sidebar-nav-item"><i class="bi bi-gift"></i>
+                            Giới thiệu bạn bè</a>
                         <hr class="sidebar-nav-divider">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -921,6 +1099,7 @@
 
             {{-- Main content --}}
             <main class="qltd-main">
+                @include('components.alert')
                 @yield('content')
             </main>
         </div>
@@ -985,23 +1164,22 @@
             <i class="bi bi-house-fill"></i>
             <span>Trang chủ</span>
         </a>
-        <button class="mobile-nav-item" data-bs-toggle="modal" data-bs-target="#filterModal">
-            <i class="bi bi-sliders2"></i>
-            <span>Lọc</span>
+        <button class="mobile-nav-item" onclick="window.location='{{ route('user.post.index') }}'">
+            <i class="bi bi-list-ul"></i>
+            <span>Tin đăng</span>
         </button>
-        <a href="" class="mobile-nav-item btn-post-mobile">
+        <a href="{{ route('user.post.create') }}" class="mobile-nav-item btn-post-mobile">
             <i class="bi bi-plus-circle-fill"></i>
             <span>Đăng tin</span>
         </a>
-        <a href="#" class="mobile-nav-item">
+        <a href="{{ route('saved-post.index') }}" class="mobile-nav-item">
             <i class="bi bi-bookmark"></i>
             <span>Đã lưu</span>
         </a>
         @auth
-            <a href="" class="mobile-nav-item">
+            <a href="{{ route('frontend.profile.index') }}" class="mobile-nav-item">
                 <img src="{{ asset('storage/' . (auth()->user()->avatar ?? 'default/avt_default.png')) }}"
                     style="width:24px;height:24px;border-radius:50%">
-                <span>{{ auth()->user()->name }}</span>
             </a>
         @else
             <a href="{{ route('login') }}" class="mobile-nav-item">
@@ -1011,21 +1189,64 @@
         @endauth
     </nav>
 
-    <!-- ═══ SCRIPTS — THỨ TỰ QUAN TRỌNG ═══ -->
-
-    {{-- 1. Bootstrap --}}
+    <!-- ═══ SCRIPTS ═══ -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    {{-- 2. Leaflet JS (phải trước bất kỳ code nào dùng L.*) --}}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    {{-- 3. Scripts thư viện từ trang con (vd: CKEditor) — phải trước home.js và user.js --}}
     @stack('lib-scripts')
-
-    {{-- 4. App JS chung --}}
     <script src="{{ asset('js/frontend/home.js') }}"></script>
 
-    {{-- 5. Scripts logic của trang con --}}
+    {{-- Sidebar drawer mobile --}}
+    <script>
+        (function () {
+            var btn = document.getElementById('sidebarBtn');
+            var drawer = document.getElementById('sidebarDrawer');
+            var overlay = document.getElementById('sidebarOverlay');
+            var closeBtn = document.getElementById('sidebarClose');
+
+            function openDrawer() {
+                drawer.classList.add('open');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            if (btn) btn.addEventListener('click', openDrawer);
+            if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+            if (overlay) overlay.addEventListener('click', closeDrawer);
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeDrawer();
+            });
+        })();
+    </script>
+
+    {{-- Auto-active sidebar nav item dựa theo URL hiện tại --}}
+    <script>
+        (function () {
+            const currentPath = window.location.pathname;
+
+            document.querySelectorAll('.sidebar-nav-item').forEach(function (item) {
+                const href = item.getAttribute('href');
+                if (!href || href === '#') return;
+
+                try {
+                    const itemPath = new URL(href, window.location.origin).pathname;
+                    if (currentPath === itemPath) {
+                        document.querySelectorAll('.sidebar-nav-item').forEach(function (el) {
+                            el.classList.remove('active');
+                        });
+                        item.classList.add('active');
+                    }
+                } catch (e) { }
+            });
+        })();
+    </script>
+
     @stack('scripts')
 
 </body>

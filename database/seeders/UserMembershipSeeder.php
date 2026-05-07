@@ -12,22 +12,22 @@ class UserMembershipSeeder extends Seeder
 {
     public function run(): void
     {
-        // 🔹 Lấy tất cả user (trừ admin)
+       
         $users = User::whereDoesntHave('roles', function ($q) {
             $q->where('name', 'admin');
         })->get();
 
-        // 🔹 Lấy package active
+       
         $packages = MembershipPackage::where('is_active', true)->get();
 
-        // ⚠️ tránh lỗi nếu chưa có package
+    
         if ($packages->isEmpty()) {
             return;
         }
 
         foreach ($users as $user) {
 
-            // 🔹 random 1 gói
+          
             $package = $packages->random();
 
             $startDate = now();
@@ -41,7 +41,7 @@ class UserMembershipSeeder extends Seeder
                     'membership_package_id' => $package->id,
                     'start_date' => $startDate,
                     'end_date' => $endDate,
-                    'status' => 'active', // luôn active khi seed
+                    'status' => 'active', 
                 ]
             );
         }

@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('membership_packages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('membership_id')->constrained('memberships')->cascadeOnDelete();
-            $table->integer('duration_days'); // số ngày
+            $table->integer('duration_days')->nullable(); // số ngày
             $table->integer('price');
             $table->boolean('is_active')->default(true);
             $table->text('description')->nullable();

@@ -51,7 +51,7 @@ class RegisterController extends Controller
             'referred_by' => $referrer?->id // chuẩn
         ]);
 
-        $user->assignRole('user');
+        $user->assignRole($request->role ?? 'user');
 
         return $user;
     }

@@ -23,7 +23,6 @@
             --radius-sm: 8px;
         }
 
-        /* ── Page wrapper ── */
         .pd-page {
             font-family: 'Be Vietnam Pro', sans-serif;
             color: var(--text-main);
@@ -32,7 +31,6 @@
             padding: 32px 16px 64px;
         }
 
-        /* ── Page title ── */
         .pd-title {
             font-family: 'Playfair Display', serif;
             font-size: 1.75rem;
@@ -52,7 +50,6 @@
             border-radius: 2px;
         }
 
-        /* ── Card ── */
         .pd-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -90,7 +87,6 @@
             padding: 22px;
         }
 
-        /* ── Info grid ── */
         .pd-info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -123,7 +119,6 @@
             font-weight: 500;
         }
 
-        /* ── Price chip ── */
         .price-chip {
             display: inline-flex;
             align-items: center;
@@ -137,17 +132,15 @@
             border: 1px solid #fecdd3;
         }
 
-        /* ── Avatar / main image ── */
         .pd-avatar {
             width: 100%;
             max-height: 220px;
             object-fit: cover;
-
-            border-radius: 50% border: 1px solid var(--border);
+            border-radius: 14px;
+            border: 1px solid var(--border);
             display: block;
         }
 
-        /* ── General layout for first card ── */
         .pd-hero {
             display: grid;
             grid-template-columns: 220px 1fr;
@@ -161,7 +154,6 @@
             }
         }
 
-        /* ── Address link ── */
         .pd-map-link {
             color: var(--primary);
             text-decoration: none;
@@ -175,7 +167,6 @@
             text-decoration: underline;
         }
 
-        /* ── Description ── */
         .pd-description {
             font-size: .94rem;
             line-height: 1.75;
@@ -186,7 +177,6 @@
             margin-bottom: .6rem;
         }
 
-        /* ── Amenity badges ── */
         .amenity-badge {
             display: inline-flex;
             align-items: center;
@@ -201,7 +191,6 @@
             margin: 3px;
         }
 
-        /* ── Image gallery ── */
         .pd-main-image {
             width: 100%;
             height: 340px;
@@ -210,7 +199,6 @@
             border: 1px solid var(--border);
             display: block;
             margin-bottom: 14px;
-            transition: opacity .2s;
         }
 
         .pd-thumb-strip {
@@ -234,7 +222,6 @@
             transform: translateY(-2px);
         }
 
-        /* ── Status badges ── */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -272,7 +259,6 @@
             display: inline-block;
         }
 
-        /* ── Stats row ── */
         .pd-stats {
             display: flex;
             gap: 24px;
@@ -301,7 +287,6 @@
             font-weight: 600;
         }
 
-        /* ── Action bar ── */
         .pd-actions {
             display: flex;
             gap: 10px;
@@ -323,17 +308,12 @@
             border: none;
             cursor: pointer;
             text-decoration: none;
-            transition: filter .15s, transform .1s, box-shadow .15s;
+            transition: .15s;
         }
 
         .pd-btn:hover {
-            filter: brightness(1.06);
+            filter: brightness(1.05);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
-        }
-
-        .pd-btn:active {
-            transform: translateY(0);
         }
 
         .pd-btn-secondary {
@@ -358,46 +338,61 @@
             align-self: stretch;
             margin: 0 4px;
         }
+
+        .pd-map-wrapper {
+            padding: 0 !important;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
     </style>
 
     <div class="pd-page">
 
         <a href="{{ route('admin.post') }}" class="pd-btn pd-btn-secondary mb-3">
-            ← Quay lại
+            <i class="bi bi-arrow-left"></i> Quay lại
         </a>
-        <h3 class="pd-title">📄 Chi tiết bài đăng</h3>
 
-        {{-- ===== THÔNG TIN CHUNG ===== --}}
+        <h3 class="pd-title">
+            <i class="bi bi-file-earmark-text"></i>
+            Chi tiết bài đăng
+        </h3>
+
+        {{-- THÔNG TIN CHUNG --}}
         <div class="pd-card">
-            <div class="pd-card-header"><span class="icon">ℹ️</span> Thông tin chung</div>
+            <div class="pd-card-header">
+                <span class="icon"><i class="bi bi-info-circle"></i></span>
+                Thông tin chung
+            </div>
+
             <div class="pd-card-body">
                 <div class="pd-hero">
-
-                    {{-- AVATAR --}}
-                    <div class="">
+                    <div>
                         <img src="{{ asset('storage/' . ($post->user->avatar ?? 'default/avt_default.png')) }}"
                             class="pd-avatar" alt="avatar">
                     </div>
 
-                    {{-- INFO --}}
                     <div class="pd-info-grid">
                         <div class="pd-field" style="grid-column: 1 / -1">
-                            <span class="pd-field-label">Tiêu đề:</span>
-                            <span class="pd-field-value" style="font-size:1.05rem">{{ $post->title }}</span>
+                            <span class="pd-field-label">Tiêu đề</span>
+                            <span class="pd-field-value" style="font-size:1.05rem">
+                                {{ $post->title }}
+                            </span>
                         </div>
 
                         <div class="pd-field">
-                            <span class="pd-field-label">Danh mục:</span>
+                            <span class="pd-field-label">Danh mục</span>
                             <span class="pd-field-value">{{ $post->category->name ?? '---' }}</span>
                         </div>
 
                         <div class="pd-field">
-                            <span class="pd-field-label">Người đăng:</span>
+                            <span class="pd-field-label">Người đăng</span>
                             <span class="pd-field-value">{{ $post->user->name ?? '---' }}</span>
                         </div>
 
                         <div class="pd-field">
-                            <span class="pd-field-label">Giá:</span>
+                            <span class="pd-field-label">Giá</span>
                             <span class="price-chip">
                                 {{ number_format($post->price) }} đ /
                                 {{ $post->price_unit == 'month' ? 'tháng' : 'ngày' }}
@@ -405,21 +400,23 @@
                         </div>
 
                         <div class="pd-field">
-                            <span class="pd-field-label">Diện tích:</span>
+                            <span class="pd-field-label">Diện tích</span>
                             <span class="pd-field-value">{{ $post->area }} m²</span>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
 
-        {{-- ===== ĐỊA CHỈ ===== --}}
+        {{-- ĐỊA CHỈ --}}
         <div class="pd-card">
-            <div class="pd-card-header"><span class="icon">📍</span> Địa chỉ</div>
+            <div class="pd-card-header">
+                <span class="icon"><i class="bi bi-geo-alt"></i></span>
+                Địa chỉ
+            </div>
+
             <div class="pd-card-body">
                 <div class="pd-info-grid">
-
                     <div class="pd-field">
                         <span class="pd-field-label">Tỉnh / Thành phố</span>
                         <span class="pd-field-value">{{ $post->ward->province->name ?? '---' }}</span>
@@ -434,9 +431,9 @@
                         <span class="pd-field-label">Địa chỉ cụ thể</span>
                         <span class="pd-field-value">
                             @if($post->latitude && $post->longitude)
-                                <a href="https://www.google.com/maps?q={{ $post->latitude }},{{ $post->longitude }}&z=17"
+                                <a href="https://www.google.com/maps?q={{ $post->latitude }},{{ $post->longitude }}"
                                     target="_blank" class="pd-map-link">
-                                    <i class="fas fa-map-marker-alt"></i>
+                                    <i class="bi bi-geo-alt-fill"></i>
                                     {{ $post->address }}
                                 </a>
                             @else
@@ -445,32 +442,39 @@
                         </span>
                     </div>
 
-                    {{-- ===== KHUNG BẢN ĐỒ ===== --}}
                     @if($post->latitude && $post->longitude)
                         <div class="pd-field pd-map-wrapper" style="grid-column: 1 / -1">
-                            <div id="pd-map" style="height: 320px; width: 100%; border-radius: 0 0 8px 8px;"></div>
+                           
+                            <div id="pd-map" style="height:320px;"></div>
                         </div>
                     @endif
-
                 </div>
             </div>
         </div>
 
-        {{-- ===== TIỆN ÍCH ===== --}}
+        {{-- TIỆN ÍCH --}}
         <div class="pd-card">
-            <div class="pd-card-header"><span class="icon">⭐</span> Tiện ích</div>
+            <div class="pd-card-header">
+                <span class="icon"><i class="bi bi-stars"></i></span>
+                Tiện ích
+            </div>
+
             <div class="pd-card-body">
                 @forelse($post->amenities as $a)
                     <span class="amenity-badge">{{ $a->name }}</span>
                 @empty
-                    <p style="color:var(--text-muted); font-size:.9rem; margin:0">Không có tiện ích</p>
+                    <p class="text-muted mb-0">Không có tiện ích</p>
                 @endforelse
             </div>
         </div>
 
-        {{-- ===== MÔ TẢ ===== --}}
+        {{-- MÔ TẢ --}}
         <div class="pd-card">
-            <div class="pd-card-header"><span class="icon">📝</span> Mô tả</div>
+            <div class="pd-card-header">
+                <span class="icon"><i class="bi bi-card-text"></i></span>
+                Mô tả
+            </div>
+
             <div class="pd-card-body">
                 <div class="pd-description">
                     {!! $post->description !!}
@@ -478,57 +482,61 @@
             </div>
         </div>
 
-
-
-        {{-- ===== HÌNH ẢNH ===== --}}
+        {{-- HÌNH ẢNH --}}
         <div class="pd-card">
-            <div class="pd-card-header"><span class="icon">🖼</span> Hình ảnh</div>
+            <div class="pd-card-header">
+                <span class="icon"><i class="bi bi-images"></i></span>
+                Hình ảnh
+            </div>
+
             <div class="pd-card-body">
-
                 @if($post->images->count())
-
                     @php
-                        $thumbnail = $post->images->firstWhere('is_thumbnail', true)
-                            ?? $post->images->first();
+                        $thumbnail = $post->images->firstWhere('is_thumbnail', true) ?? $post->images->first();
                     @endphp
 
-                    {{-- ẢNH LỚN --}}
-                    <img id="mainImage" src="{{ asset('storage/' . $thumbnail->image) }}" class="pd-main-image"
-                        alt="main image">
+                    <img id="mainImage" src="{{ asset('storage/' . $thumbnail->image) }}" class="pd-main-image" alt="Ảnh chính">
 
-                    {{-- THUMB STRIP --}}
                     <div class="pd-thumb-strip">
                         @foreach($post->images as $img)
                             <img src="{{ asset('storage/' . $img->image) }}" class="pd-thumb"
                                 onclick="document.getElementById('mainImage').src='{{ asset('storage/' . $img->image) }}'">
                         @endforeach
                     </div>
-
                 @else
-                    <p style="color:var(--text-muted); font-size:.9rem; margin:0">Không có hình ảnh</p>
+                    <p class="text-muted mb-0">Không có hình ảnh</p>
                 @endif
-
             </div>
         </div>
 
-        {{-- ===== TRẠNG THÁI ===== --}}
+        {{-- TRẠNG THÁI --}}
         <div class="pd-card">
-            <div class="pd-card-header"><span class="icon">⚙️</span> Trạng thái</div>
-            <div class="pd-card-body">
+            <div class="pd-card-header">
+                <span class="icon"><i class="bi bi-check2-circle"></i></span>
+                Trạng thái
+            </div>
 
-                <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:20px">
+            <div class="pd-card-body">
+                <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px">
                     @if($post->status == 'pending')
-                        <span class="status-badge pending"><span class="status-dot"></span> Chờ duyệt</span>
+                        <span class="status-badge pending">
+                            <span class="status-dot"></span> Chờ duyệt
+                        </span>
                     @elseif($post->status == 'approved')
-                        <span class="status-badge approved"><span class="status-dot"></span> Đã duyệt</span>
+                        <span class="status-badge approved">
+                            <span class="status-dot"></span> Đã duyệt
+                        </span>
                     @else
-                        <span class="status-badge rejected"><span class="status-dot"></span> Từ chối</span>
+                        <span class="status-badge rejected">
+                            <span class="status-dot"></span> Từ chối
+                        </span>
                     @endif
                 </div>
 
                 @php
                     $latestRejected = $post->postModerations
                         ->where('action', 'rejected')
+                        ->sortByDesc('created_at')
                         ->first();
 
                     $reasons = [
@@ -539,12 +547,15 @@
                         'other' => 'Khác'
                     ];
                 @endphp
+
                 @if($post->status == 'rejected' && $latestRejected)
                     <div class="alert alert-danger">
-                        <strong>Lý do từ chối: </strong>{{ $reasons[$latestRejected->reason_type] ?? 'Không xác định' }}
+                        <strong>Lý do từ chối:</strong>
+                        {{ $reasons[$latestRejected->reason_type] ?? 'Không xác định' }}
+
                         @if($latestRejected->reason_detail)
-                            <div>
-                                <b>Chi tiết:</b>
+                            <div class="mt-2">
+                                <strong>Chi tiết:</strong>
                                 {{ $latestRejected->reason_detail }}
                             </div>
                         @endif
@@ -553,97 +564,53 @@
 
                 <div class="pd-stats">
                     <div class="pd-stat-item">
-                        <span class="pd-stat-number">{{ number_format($post->view_count) }}</span>
+                        <span class="pd-stat-number">{{ number_format($post->view_count ?? 0) }}</span>
                         <span class="pd-stat-label">Lượt xem</span>
                     </div>
-                    <div class="pd-stat-item">
-                        <span class="pd-stat-number">
-                            {{ $post->expires_at ? \Carbon\Carbon::parse($post->expires_at)->format('d/m/Y') : '---' }}
-                        </span>
-                        <span class="pd-stat-label">Hết hạn</span>
-                    </div>
                 </div>
-
             </div>
         </div>
-        {{-- ===== ACTION ===== --}}
-        <div class="pd-actions">
-            <div class="pd-divider"></div>
-            <form action="{{ route('admin.post.approved', ['id' => $post->id, 'slug' => $post->slug]) }}" method="POST">
-                @csrf
-                @method('PUT')
 
-                <button class="pd-btn pd-btn-success">✔ Duyệt</button>
-            </form>
-            <button type="button" class="pd-btn pd-btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
-                ✖ Từ chối
-            </button>
-        </div>
+        {{-- ACTION --}}
+        @if($post->status == 'pending')
+            <div class="pd-actions">
+                <form action="{{ route('admin.post.admin.approved', ['id' => $post->id, 'slug' => $post->slug]) }}"
+                    method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <button type="submit" class="pd-btn pd-btn-success">
+                        <i class="bi bi-check2-square"></i>
+                        Duyệt bài
+                    </button>
+                </form>
+
+                <button type="button" class="pd-btn pd-btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                    <i class="bi bi-x-square"></i>
+                    Từ chối
+                </button>
+            </div>
+        @elseif($post->status == 'approved')
+            <div class="alert alert-success">
+                Bài viết này đã được duyệt.
+            </div>
+        @else
+            <div class="alert alert-danger">
+                Bài viết này đã bị từ chối.
+            </div>
+        @endif
     </div>
+
     @include('admin.post.rejectmodal')
 @endsection
+
 @push('scripts')
-    {{-- ===== CSS BẢN ĐỒ ===== --}}
     @if($post->latitude && $post->longitude)
-        @once
-            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-            <style>
-                .pd-map-wrapper {
-                    padding: 0 !important;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    margin-top: 4px;
-                }
-
-                .pd-map-toolbar {
-                    display: flex;
-                    gap: 0;
-                    background: #f8fafc;
-                    border-bottom: 1px solid #e2e8f0;
-                }
-
-                .pd-map-layer-btn {
-                    flex: 1;
-                    padding: 8px 12px;
-                    font-size: 13px;
-                    font-weight: 500;
-                    color: #64748b;
-                    background: transparent;
-                    border: none;
-                    border-right: 1px solid #e2e8f0;
-                    cursor: pointer;
-                    transition: background 0.15s, color 0.15s;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 5px;
-                }
-
-                .pd-map-layer-btn:last-child {
-                    border-right: none;
-                }
-
-                .pd-map-layer-btn:hover {
-                    background: #e2e8f0;
-                    color: #334155;
-                }
-
-                .pd-map-layer-btn.active {
-                    background: #3b82f6;
-                    color: #fff;
-                }
-
-                #pd-map .leaflet-control-zoom a {
-                    font-size: 14px;
-                }
-            </style>
-        @endonce
-
-        {{-- ===== SCRIPT BẢN ĐỒ ===== --}}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
         <script>
-            (function () {
+            document.addEventListener('DOMContentLoaded', function () {
                 const lat = {{ $post->latitude }};
                 const lng = {{ $post->longitude }};
                 const address = @json($post->address ?? '');
@@ -651,38 +618,43 @@
                 const map = L.map('pd-map', {
                     center: [lat, lng],
                     zoom: 17,
-                    zoomControl: true,
-                    scrollWheelZoom: false,
+                    scrollWheelZoom: false
                 });
 
-                // --- Các lớp tile ---
-                const googleStreet = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { attribution: '© Google Maps', maxZoom: 20 });
-                const googleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { attribution: '© Google Maps', maxZoom: 20 });
-                const googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { attribution: '© Google Maps', maxZoom: 20 });
+                const layers = {
+                    street: L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                        attribution: 'Google',
+                        maxZoom: 20
+                    }),
+                    satellite: L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                        attribution: 'Google',
+                        maxZoom: 20
+                    }),
+                    hybrid: L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                        attribution: 'Google',
+                        maxZoom: 20
+                    }),
+                };
 
-                const layers = { street: googleStreet, satellite: googleSatellite, hybrid: googleHybrid };
-                let currentLayer = googleStreet.addTo(map);
+                let current = layers.street.addTo(map);
 
-                // --- Marker ---
-                const marker = L.marker([lat, lng]).addTo(map);
-                if (address) {
-                    marker.bindPopup(`<div style="font-size:13px;max-width:220px">${address}</div>`).openPopup();
-                }
+                L.marker([lat, lng]).addTo(map)
+                    .bindPopup(address ? `<div style="font-size:13px;max-width:200px">${address}</div>` : '')
+                    .openPopup();
 
-                // --- Chuyển lớp tile ---
-                document.querySelectorAll('.pd-map-layer-btn').forEach(btn => {
+                document.querySelectorAll('.map-tb-btn').forEach(btn => {
                     btn.addEventListener('click', function () {
-                        const layerKey = this.dataset.layer;
-                        if (layers[layerKey] === currentLayer) return;
+                        const key = this.dataset.layer;
+                        if (!layers[key] || layers[key] === current) return;
 
-                        map.removeLayer(currentLayer);
-                        currentLayer = layers[layerKey].addTo(map);
+                        map.removeLayer(current);
+                        current = layers[key].addTo(map);
 
-                        document.querySelectorAll('.pd-map-layer-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.map-tb-btn').forEach(b => b.classList.remove('active'));
                         this.classList.add('active');
                     });
                 });
-            })();
+            });
         </script>
     @endif
 @endpush

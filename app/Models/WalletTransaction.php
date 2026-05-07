@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class WalletTransaction extends Model
 {
@@ -30,6 +32,25 @@ class WalletTransaction extends Model
         'processed_at',
         'admin_note',
     ];
+    
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('wallet')
+            ->logOnly([
+                'type',
+                'amount',
+                'status',
+                'balance_before',
+                'balance_after',
+                'description',
+                'approved_by',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     protected $casts = [
         'requested_at' => 'datetime',

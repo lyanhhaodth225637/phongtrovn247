@@ -33,7 +33,7 @@ return new class extends Migration {
             $table->decimal('longitude', 10, 7)->nullable();
 
             // Trạng thái duyệt
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'expired'])->default('pending');
             // Ẩn / hiện
             $table->boolean('is_visible_admin')->default(true);
             $table->boolean('is_visible_owner')->default(true);
@@ -58,4 +58,9 @@ return new class extends Migration {
     {
         Schema::dropIfExists('posts');
     }
+    // public function savedByUsers()
+    // {
+    //     return $this->belongsToMany(User::class, 'saved_posts', 'post_id', 'user_id')
+    //         ->withTimestamps();
+    // }
 };

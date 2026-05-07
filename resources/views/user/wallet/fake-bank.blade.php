@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="vi">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-        rel="stylesheet">
+
+
     <style>
         * {
             box-sizing: border-box;
@@ -15,15 +8,15 @@
             padding: 0;
         }
 
-        body {
+        .wallet-bank-page {
             font-family: 'Be Vietnam Pro', sans-serif;
             background: #0a0f1e;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Animated background */
-        body::before {
+        .wallet-bank-page::before {
             content: '';
             position: fixed;
             inset: 0;
@@ -44,70 +37,6 @@
             flex-direction: column;
         }
 
-        /* Top bar */
-        .bank-topbar {
-            background: rgba(10, 15, 30, 0.95);
-            border-bottom: 1px solid rgba(0, 102, 204, 0.3);
-            padding: 12px 0;
-            backdrop-filter: blur(20px);
-        }
-
-        .bank-topbar .logo-text {
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.5px;
-        }
-
-        .bank-topbar .logo-text span {
-            color: #0066cc;
-        }
-
-        .secure-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: #00a86b;
-            font-weight: 500;
-        }
-
-        .secure-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #00a86b;
-            border-radius: 50%;
-            animation: pulse-green 2s infinite;
-        }
-
-        @keyframes pulse-green {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(0, 168, 107, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 0 0 6px rgba(0, 168, 107, 0);
-            }
-        }
-
-        /* SSL bar */
-        .ssl-bar {
-            background: linear-gradient(90deg, #003d7a 0%, #0055a8 50%, #003d7a 100%);
-            padding: 7px 0;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.7);
-            text-align: center;
-            letter-spacing: 0.3px;
-        }
-
-        .ssl-bar strong {
-            color: #fff;
-        }
-
-        /* Main content */
         .main-content {
             flex: 1;
             display: flex;
@@ -140,7 +69,6 @@
             }
         }
 
-        /* Card header */
         .card-header-bank {
             background: linear-gradient(135deg, #0047a0 0%, #0066cc 60%, #0080ff 100%);
             padding: 28px 32px 24px;
@@ -227,7 +155,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Status badge */
         .status-row {
             display: flex;
             align-items: center;
@@ -261,9 +188,7 @@
         }
 
         @keyframes blink {
-
-            0%,
-            100% {
+            0%, 100% {
                 opacity: 1;
             }
 
@@ -272,7 +197,6 @@
             }
         }
 
-        /* Card body */
         .card-body-bank {
             padding: 28px 32px;
         }
@@ -352,16 +276,14 @@
             letter-spacing: 0.3px;
         }
 
-        /* Divider */
         .card-divider {
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
             margin: 4px 32px;
         }
 
-        /* Warning box */
         .warning-box {
-            margin: 0 32px 24px;
+            margin: 20px 32px 24px;
             background: rgba(255, 190, 0, 0.07);
             border: 1px solid rgba(255, 190, 0, 0.2);
             border-radius: 10px;
@@ -383,7 +305,6 @@
             line-height: 1.6;
         }
 
-        /* Action buttons */
         .card-actions {
             padding: 0 32px 32px;
             display: flex;
@@ -454,63 +375,6 @@
             transform: translateY(-1px);
         }
 
-        /* Footer */
-        .bank-footer {
-            background: rgba(10, 15, 30, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px 0;
-            text-align: center;
-        }
-
-        .footer-logos {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 8px;
-        }
-
-        .footer-badge {
-            padding: 4px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .footer-text {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.25);
-        }
-
-        /* Countdown */
-        .countdown-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: 0 32px 20px;
-            padding: 10px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 10px;
-        }
-
-        .countdown-label {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.35);
-        }
-
-        .countdown-timer {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffbe00;
-        }
-
         .progress-bar-track {
             height: 3px;
             background: rgba(255, 255, 255, 0.06);
@@ -537,96 +401,76 @@
             }
         }
     </style>
-</head>
 
-<body>
-    <div class="page-wrapper">
+    <div class="wallet-bank-page">
+        <div class="page-wrapper">
+            <div class="main-content">
+                <div class="transaction-card">
 
-
-
-        <!-- Main -->
-        <div class="main-content">
-            <div class="transaction-card">
-
-                <!-- Card Header -->
-                <div class="card-header-bank">
-                    <div class="header-title">Xác nhận chuyển khoản</div>
-                    <div class="header-amount">
-                        <span class="currency">VNĐ</span>{{ number_format($transaction->amount) }}
-                    </div>
-                    <div class="tx-code">
-                        <span class="label">Mã GD</span>
-                        <span class="code">{{ $transaction->transaction_code }}</span>
-                    </div>
-                    <div class="status-row">
-                        <div class="status-badge">
-                            <div class="status-dot"></div>
-                            Chờ xác nhận
+                    <div class="card-header-bank">
+                        <div class="header-title">Xác nhận chuyển khoản</div>
+                        <div class="header-amount">
+                            <span class="currency">VNĐ</span>{{ number_format($transaction->amount) }}
+                        </div>
+                        <div class="tx-code">
+                            <span class="label">Mã GD</span>
+                            <span class="code">{{ $transaction->transaction_code }}</span>
+                        </div>
+                        <div class="status-row">
+                            <div class="status-badge">
+                                <div class="status-dot"></div>
+                                Chờ xác nhận
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Card Body -->
-                <div class="card-body-bank">
-                    <div class="info-section-title">Thông tin giao dịch</div>
+                    <div class="card-body-bank">
+                        <div class="info-section-title">Thông tin giao dịch</div>
 
-                    <div class="info-row">
-                        <span class="info-label">Ngân hàng</span>
-                        <span class="info-value">{{ $transaction->bank_name }}</span>
+                        <div class="info-row">
+                            <span class="info-label">Ngân hàng</span>
+                            <span class="info-value">{{ $transaction->bank_name }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Chủ tài khoản</span>
+                            <span class="info-value">{{ $transaction->bank_account_name }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Số tài khoản</span>
+                            <span class="info-value mono">{{ $transaction->bank_account_number }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Nội dung CK</span>
+                            <span class="info-value transfer-content">{{ $transaction->transfer_content }}</span>
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Chủ tài khoản</span>
-                        <span class="info-value">{{ $transaction->bank_account_name }}</span>
+
+                    <div class="card-divider"></div>
+
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill"></div>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Số tài khoản</span>
-                        <span class="info-value mono">{{ $transaction->bank_account_number }}</span>
+
+                    <div class="warning-box">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-text">
+                            Vui lòng kiểm tra kỹ thông tin trước khi xác nhận. Giao dịch sau khi hoàn tất không thể hoàn tác.
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Nội dung CK</span>
-                        <span class="info-value transfer-content">{{ $transaction->transfer_content }}</span>
+
+                    <div class="card-actions">
+                        <form action="{{ route('user.wallet.fake.confirm', $transaction->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-confirm">✓ &nbsp; Xác nhận giao dịch</button>
+                        </form>
+
+                        <form action="{{ route('user.wallet.fake.cancel', $transaction->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-cancel">Hủy giao dịch</button>
+                        </form>
                     </div>
+
                 </div>
-
-                <div class="card-divider"></div>
-
-                
-                <div class="progress-bar-track">
-                    <div class="progress-bar-fill"></div>
-                </div>
-
-                <!-- Warning -->
-                <div class="warning-box" style="margin-top:20px;">
-                    <div class="warning-icon">⚠️</div>
-                    <div class="warning-text">Vui lòng kiểm tra kỹ thông tin trước khi xác nhận. Giao dịch sau khi hoàn
-                        tất không thể hoàn tác.</div>
-                </div>
-
-                <!-- Actions -->
-                <div class="card-actions">
-
-                    <form action="{{ route('user.wallet.fake.confirm', $transaction->id) }}" method="POST">
-                        @csrf
-                        <!-- thêm modal xác nhân  -->
-                        <button type="submit" class="btn-confirm">✓ &nbsp; Xác nhận giao dịch</button>
-                    </form>
-
-                    <form action="{{ route('user.wallet.fake.cancel', $transaction->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn-cancel">Hủy giao dịch</button>
-                    </form>
-
-                   
-                </div>
-
             </div>
         </div>
-
-
-
     </div>
-
-
-</body>
-
-</html>

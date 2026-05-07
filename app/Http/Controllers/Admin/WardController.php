@@ -9,12 +9,21 @@ use App\Models\Province;
 
 class WardController extends Controller
 {
+    // public function index()
+    // {
+    //     $province = Province::where('code', 91)->firstOrFail();
+
+    //     $wards = Ward::with('province')
+    //         ->where('province_id', $province->id)
+    //         ->orderBy('code')
+    //         ->get();
+
+    //     return view('admin.ward.index', compact('wards'));
+    // }
     public function index()
     {
-        $province = Province::where('code', 91)->firstOrFail();
-
         $wards = Ward::with('province')
-            ->where('province_id', $province->id)
+            ->orderBy('province_id')
             ->orderBy('code')
             ->get();
 
