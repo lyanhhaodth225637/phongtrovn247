@@ -220,7 +220,7 @@
 
                 $postType = match ($membershipSlug) {
                     'vip-5', 'vip-4' => 'featured',
-                    'vip-3', 'vip-2', 'vip-1' => 'suggest',
+                    'vip-1' => 'suggest',
                     default => 'normal',
                 };
 
