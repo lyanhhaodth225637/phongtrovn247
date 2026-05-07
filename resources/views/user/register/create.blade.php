@@ -2,10 +2,6 @@
 
 @section('content')
   <style>
-    /* ═══════════════════════════════════════════════════════════════
-         XÁC THỰC EMAIL — page styles
-         Dùng chung CSS variables từ home.css
-      ═══════════════════════════════════════════════════════════════ */
 
     .verify-wrap {
       min-height: calc(100vh - 200px);

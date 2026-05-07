@@ -276,10 +276,11 @@ class HomeController extends Controller
         // Bài viết thường
         else {
             $posts = $posts
-                ->whereNull('membership_id')
-                ->orderByDesc('created_at');
+                ->whereHas('membership', function ($q) {
+                    $q->where('slug', 'thuong');
+                })
+                ->orderByRaw('COALESCE(pushed_at, created_at) DESC');
         }
-
         $posts = $posts->paginate(20)->withQueryString();
 
         return view('frontend.all-post', [

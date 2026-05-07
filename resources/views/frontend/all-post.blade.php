@@ -1,4 +1,3 @@
-
 @extends('layouts.frontend.app')
 
 @section('content')
@@ -21,14 +20,24 @@
                         default => 'bi-patch-check-fill',
                     };
 
+                    // Màu dự phòng chỉ dùng khi bài đăng không có membership hoặc membership chưa khai báo color.
                     $fallbackColor = match ($type) {
-                        'suggest' => '#ef4444',
-                        'featured' => '#f97316',
-                        default => '#10b981',
+                        'suggest' => '#ef4444',   // Tin đề xuất
+                        'featured' => '#f97316',  // Tin nổi bật
+                        default => '#10b981',     // Tin thường
+                    };
+
+                    // Header là màu đại diện của trang. Ưu tiên lấy màu từ membership của bài đầu tiên.
+                    $headerColor = $posts->first()?->membership?->color ?: $fallbackColor;
+
+                    $badgeLabel = match ($type) {
+                        'suggest' => 'Đề xuất',
+                        'featured' => 'Nổi bật',
+                        default => 'Thường',
                     };
                 @endphp
 
-                <span class="vip-badge {{ $badgeClass }}">
+                <span class="vip-badge {{ $badgeClass }}" style="background:{{ $headerColor }}; color:#fff;">
                     <i class="bi {{ $icon }}"></i>
                     {{ $title }}
                 </span>
@@ -45,13 +54,13 @@
                 <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-4 mb-4">
                     @foreach($posts as $post)
                         @php
-                            $color = $post->membership->color ?? $fallbackColor;
+                            $color = $post->membership?->color ?: $fallbackColor;
                             $isSaved = auth()->check() && auth()->user()->savedPosts()->where('post_id', $post->id)->exists();
+                            $phone = $post->user?->phone ?? '0000000000';
                         @endphp
 
                         <div class="col">
                             <div class="card-vip5 h-100 position-relative" style="border-top:3px solid {{ $color }};">
-
                                 <div class="img-wrap">
                                     <a href="{{ route('frontend.post.show', ['id' => $post->id, 'slug' => $post->slug]) }}">
                                         <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
@@ -60,7 +69,7 @@
 
                                     <span class="hot-tag" style="background:{{ $color }};">
                                         <i class="bi bi-fire"></i>
-                                        {{ $post->membership->name ?? $title }}
+                                        {{ $post->membership?->name ?? $badgeLabel }}
                                     </span>
 
                                     @if($post->images->count() > 1)
@@ -120,10 +129,10 @@
                                                 </button>
                                             </form>
 
-                                            <button class="phone-btn" data-phone="{{ $post->user?->phone ?? '' }}"
+                                            <button type="button" class="phone-btn" data-phone="{{ $post->user?->phone ?? '' }}"
                                                 style="background:{{ $color }}; border-color:{{ $color }}; color:#fff;">
                                                 <i class="bi bi-telephone-fill"></i>
-                                                {{ substr($post->user?->phone ?? '0000000000', 0, 3) }}*****{{ substr($post->user?->phone ?? '0000000000', -2) }}
+                                                {{ substr($phone, 0, 3) }}*****{{ substr($phone, -2) }}
                                             </button>
                                         </div>
                                     </div>
@@ -133,7 +142,13 @@
                     @endforeach
                 </div>
             @else
-              ---   
+                <div class="lp-empty text-center py-5">
+                    <div class="empty-icon mb-3">
+                        <i class="bi bi-inbox" style="font-size:48px;"></i>
+                    </div>
+                    <h4>Chưa có bài đăng nào</h4>
+                    <p class="text-muted">Hiện chưa có bài viết trong mục này.</p>
+                </div>
             @endif
 
             {{-- Bài viết nổi bật --}}
@@ -142,12 +157,13 @@
                 <div class="row g-3 mb-4">
                     @foreach($posts as $post)
                         @php
-                            $color = $post->membership->color ?? $fallbackColor;
+                            $color = $post->membership?->color ?: $fallbackColor;
                             $isSaved = auth()->check() && auth()->user()->savedPosts()->where('post_id', $post->id)->exists();
+                            $phone = $post->user?->phone ?? '0000000000';
                         @endphp
 
                         <div class="col-12 col-md-6">
-                            <div class="card-vip4 h-100" style="border-left:4px solid {{ $color }};">
+                            <div class="card-vip4 h-100 position-relative" style="border-left:4px solid {{ $color }};">
                                 <div class="img-wrap position-relative">
                                     <a href="{{ route('frontend.post.show', ['id' => $post->id, 'slug' => $post->slug]) }}">
                                         <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
@@ -157,7 +173,7 @@
                                     <span class="vip-badge vip-4"
                                         style="position:absolute; top:8px; left:8px; background:{{ $color }}; color:#fff;">
                                         <i class="bi bi-star-half"></i>
-                                        {{ $post->membership->name ?? $title }}
+                                        {{ $post->membership?->name ?? $badgeLabel }}
                                     </span>
                                 </div>
 
@@ -196,10 +212,10 @@
                                                 </button>
                                             </form>
 
-                                            <button class="phone-btn" data-phone="{{ $post->user?->phone ?? '' }}"
+                                            <button type="button" class="phone-btn" data-phone="{{ $post->user?->phone ?? '' }}"
                                                 style="background:{{ $color }}; border-color:{{ $color }}; color:#fff;">
                                                 <i class="bi bi-telephone-fill"></i>
-                                                {{ substr($post->user?->phone ?? '0000000000', 0, 3) }}*****{{ substr($post->user?->phone ?? '0000000000', -2) }}
+                                                {{ substr($phone, 0, 3) }}*****{{ substr($phone, -2) }}
                                             </button>
                                         </div>
                                     </div>
@@ -207,6 +223,14 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+            @else
+                <div class="lp-empty text-center py-5">
+                    <div class="empty-icon mb-3">
+                        <i class="bi bi-inbox" style="font-size:48px;"></i>
+                    </div>
+                    <h4>Chưa có bài đăng nào</h4>
+                    <p class="text-muted">Hiện chưa có bài viết trong mục này.</p>
                 </div>
             @endif
 
@@ -216,22 +240,24 @@
                 <div class="row g-3 mb-4">
                     @foreach($posts as $post)
                         @php
-                            $color = $post->membership->color ?? $fallbackColor;
+                            $color = $post->membership?->color ?: $fallbackColor;
                             $isSaved = auth()->check() && auth()->user()->savedPosts()->where('post_id', $post->id)->exists();
+                            $phone = $post->user?->phone ?? '0000000000';
                         @endphp
 
                         <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card-small h-100" style="border-top:3px solid {{ $color }};">
+                            <div class="card-small h-100 position-relative" style="border-top:3px solid {{ $color }};">
                                 <div class="img-wrap">
                                     <a href="{{ route('frontend.post.show', ['id' => $post->id, 'slug' => $post->slug]) }}">
                                         <img src="{{ asset('storage/' . ($post->images->first()->image ?? 'default.jpg')) }}"
-                                            alt="{{ $post->title }}">
+                                            alt="{{ $post->title }}" loading="lazy">
                                     </a>
                                 </div>
 
                                 <div class="body d-flex flex-column">
-                                    <span class="vip-badge mb-2" style="background:{{ $color }}; color:#fff; width:max-content;">
-                                        {{ $post->membership->name ?? 'Thường' }}
+                                    <span class="vip-badge vip-1 mb-2" style="background:{{ $color }}; color:#fff; width:max-content;">
+                                        <i class="bi bi-patch-check-fill"></i>
+                                        {{ $post->membership?->name ?? $badgeLabel }}
                                     </span>
 
                                     <a href="{{ route('frontend.post.show', ['id' => $post->id, 'slug' => $post->slug]) }}"
@@ -265,10 +291,10 @@
                                                 </button>
                                             </form>
 
-                                            <button class="phone-btn" data-phone="{{ $post->user?->phone ?? '' }}"
+                                            <button type="button" class="phone-btn" data-phone="{{ $post->user?->phone ?? '' }}"
                                                 style="background:{{ $color }}; border-color:{{ $color }}; color:#fff;">
                                                 <i class="bi bi-telephone-fill"></i>
-                                                {{ substr($post->user?->phone ?? '0000000000', 0, 3) }}*****{{ substr($post->user?->phone ?? '0000000000', -2) }}
+                                                {{ substr($phone, 0, 3) }}*****{{ substr($phone, -2) }}
                                             </button>
                                         </div>
                                     </div>

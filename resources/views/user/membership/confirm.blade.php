@@ -57,7 +57,7 @@
                             <div class="row mb-3">
                                 <div class="col-5 text-muted">Giá thanh toán</div>
                                 <div class="col-7 text-danger font-weight-bold h5 mb-0">
-                                    {{ number_format($package->price) }}đ
+                                    {{ number_format($package->price, 0, ',', '.') }}đ
                                 </div>
                             </div>
 
@@ -78,7 +78,7 @@
                                         <i class="fas fa-wallet mr-1"></i>
                                         Số dư hiện tại
                                     </span>
-                                    <strong>{{ number_format(Auth::user()->balance) }}đ</strong>
+                                    <strong>{{ number_format(Auth::user()->balance, 0, ',', '.') }}đ</strong>
                                 </div>
                             </div>
 
