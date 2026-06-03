@@ -456,7 +456,7 @@ map.on('click', function (e) {
         .catch(console.error);
 });
 
-// Zoom + pin khi nhập số nhà
+// Zoom + pin khi nhập số nhà, tên đường
 houseInput?.addEventListener('input', debounce(function () {
     const house = this.value.trim();
     const wardName = selectedWard?.name || '';

@@ -17,17 +17,17 @@ use App\Models\WalletTransaction;
 
 class HomeController extends Controller
 {
-   /**
-    * Hiển thị trang hồ sơ
-    */
+
+   //Hiển thị trang hồ sơ
+
    public function index()
    {
       return view('user.profile.index');
    }
 
-   /**
-    * Cập nhật thông tin cá nhân + avatar
-    */
+
+   //Cập nhật thông tin cá nhân + avatar
+
    public function updateProfile(Request $request)
    {
       DB::beginTransaction();
@@ -92,9 +92,9 @@ class HomeController extends Controller
       }
    }
 
-   /**
-    * Đổi mật khẩu
-    */
+
+   // Đổi mật khẩu
+
    public function updatePassword(Request $request)
    {
       $user = Auth::user();
@@ -136,9 +136,9 @@ class HomeController extends Controller
       }
    }
 
-   /**
-    * Xóa tài khoản
-    */
+
+   // Xóa tài khoản
+
    public function destroy(Request $request)
    {
       $user = Auth::user();

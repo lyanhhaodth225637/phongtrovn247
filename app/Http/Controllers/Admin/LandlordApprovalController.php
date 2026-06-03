@@ -179,8 +179,6 @@ class LandlordApprovalController extends Controller
 
         // dd('đã vào đây');
 
-
-
         $user = User::findOrFail($id);
 
         $user->update([

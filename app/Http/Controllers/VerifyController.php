@@ -32,7 +32,7 @@ class VerifyController extends Controller
         $emailKey = 'otp:email:' . $email;
         $ipKey = 'otp:ip:' . $ip;
 
-        // ❌ Check email spam
+        //  Check email spam
         if (RateLimiter::tooManyAttempts($emailKey, 4)) {
             $seconds = RateLimiter::availableIn($emailKey);
 
@@ -41,7 +41,7 @@ class VerifyController extends Controller
             ], 429);
         }
 
-        // ❌ Check IP spam
+        //  Check IP spam
         if (RateLimiter::tooManyAttempts($ipKey, 12)) {
             $seconds = RateLimiter::availableIn($ipKey);
 
@@ -50,7 +50,7 @@ class VerifyController extends Controller
             ], 429);
         }
 
-        // 🔥 HIT NGAY (QUAN TRỌNG)
+        //  HIT NGAY (QUAN TRỌNG)
         RateLimiter::hit($emailKey, 300); // 5 phút
         RateLimiter::hit($ipKey, 600);    // 10 phút
 
@@ -115,37 +115,4 @@ class VerifyController extends Controller
     }
 
 
-    //test
-    // public function verify(Request $request)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'otp' => 'required|digits:6',
-    //     ]);
-
-    //     if (
-    //         $request->email !== session('otp_email') ||
-    //         $request->otp != session('otp') ||
-    //         now()->greaterThan(session('otp_expired_at', now()->subSecond()))
-    //     ) {
-    //         return back()->with('error', 'Mã OTP không đúng hoặc đã hết hạn.');
-    //     }
-
-    //     $user = auth()->user();
-
-    //     $user->email = $request->email;
-    //     $user->email_verified_at = now();
-    //     $user->save();
-
-    //     session()->forget(['otp', 'otp_expired_at', 'otp_email']);
-
-    //     $admin = User::find(1);
-
-    //     $admin->notify(new LandlordVerificationRequestedNotification($user));
-
-    //     dd($admin->notifications()->latest()->first());
-
-    //     return redirect()->route('verify.auth_landlord')
-    //         ->with('success', 'Email đã được xác thực thành công!');
-    // }
 }

@@ -189,6 +189,7 @@ class HomeController extends Controller
         return $query;
     }
 
+    //lấy ưu tiên
     private function buildPostQuery($vipSlug, $baseQuery)
     {
         return (clone $baseQuery)

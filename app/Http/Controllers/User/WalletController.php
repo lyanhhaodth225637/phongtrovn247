@@ -18,28 +18,9 @@ class WalletController extends Controller
 {
     public function index()
     {
-        // $transactions = WalletTransaction::where('user_id', Auth::id())
-        //     ->latest()
-        //     ->paginate(10);
 
         return view('user.wallet.index');
     }
-
-    // public function createDeposit()
-    // {
-    //     // Chặn vào form nạp nếu đã có giao dịch nạp chưa hoàn tất
-    //     $hasOpenDeposit = WalletTransaction::where('user_id', Auth::id())
-    //         ->where('type', 'deposit')
-    //         ->whereIn('status', ['pending', 'processing'])
-    //         ->exists();
-
-    //     if ($hasOpenDeposit) {
-    //         return redirect()->route('user.wallet.index')
-    //             ->with('error', 'Bạn đang có một giao dịch nạp tiền chưa hoàn tất. Chỉ có thể nạp tiếp khi giao dịch trước đã được duyệt hoặc bị từ chối.');
-    //     }
-
-    //     return view('user.wallet.deposit');
-    // }
 
 
     //nạp
@@ -66,7 +47,6 @@ class WalletController extends Controller
                     return back()->withInput()->with('error', 'Bạn đang có giao dịch nạp tiền chưa hoàn thành. Vui lòng chờ hệ thống xử lý.');
 
                 }
-
 
 
                 $systemWallet = SystemWallet::where('is_active', true)
@@ -288,7 +268,7 @@ class WalletController extends Controller
     public function paymentHistory()
     {
         $transactions = WalletTransaction::where('user_id', Auth::id())
-            ->whereIn('type', ['push_post', 'renew_membership','buy_membership'])
+            ->whereIn('type', ['push_post', 'renew_membership', 'buy_membership'])
             ->latest()
             ->paginate(10);
         return view('user.wallet.history-payment', compact('transactions'));
