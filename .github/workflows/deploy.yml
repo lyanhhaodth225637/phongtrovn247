@@ -1,32 +1,40 @@
-name: Deploy Laravel via FTP
+name: Deploy Laravel to cPanel via FTP
 
 on:
   push:
     branches:
-      - main
+      - main # Workflow chạy tự động khi bạn push code lên nhánh main
 
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout source
+      - name: Lấy code mới nhất
         uses: actions/checkout@v4
 
-      - name: Deploy website to hosting
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Cài đặt PHP
+        uses: shivammathur/setup-php@v2
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./
+          php-version: '8.2' # Bạn có thể đổi nếu hosting dùng bản PHP khác
+
+      - name: Cài đặt các thư viện PHP (Composer)
+        run: composer install --optimize-autoloader --no-dev
+
+      - name: Đẩy file lên cPanel qua FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER_PHONGTRO }}
+          username: ${{ secrets.FTP_USERNAME_PHONGTRO }}
+          password: ${{ secrets.FTP_PASSWORD_PHONGTRO }}
+          # Vì tài khoản FTP của bạn đã trỏ thẳng vào thư mục nguyenlyanhhao nên đích đến chỉ cần là ./
+          server-dir: ./ 
           exclude: |
             **/.git*
             **/.git*/**
-            **/.github/**
             **/node_modules/**
-            **/.env
-            **/storage/logs/**
-            **/storage/framework/cache/**
-            **/storage/framework/sessions/**
-            **/storage/framework/views/**
+            tests/**
+            .env.example
+            .envlocal
+            phpunit.xml
+            README.md
